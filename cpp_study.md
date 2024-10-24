@@ -908,9 +908,614 @@ for (int i = 0; i < 2; i++) {
 - 無限ループに注意(特にwhile文やcontinueを使用する際)
 
 ### 文字列と文字
+
+#### 文字列(string型)
+
+- 文字が順番に並んだもの
+- string型を使用して扱う
+
+```cpp
+string str1, str2;
+cin >> str1;
+str2 = ", world!";
+cout << str1 << str2 << endl;
+```
+
+#### 文字列の長さ
+
+- `文字列変数.size()`で取得
+
+```cpp
+string str = "Hello";
+cout << str.size() << endl; // 5
+```
+
+#### 文字列の要素へのアクセス
+
+- `文字列変数.at(i)`でi番目の文字にアクセス
+- 添字は0から始まる
+
+```cpp
+string str = "hello";
+cout << str.at(0) << endl; // h
+cout << str.at(4) << endl; // o
+```
+
+#### 文字(char型)
+
+- 一文字のデータを保持
+- シングルクォーテーション（'）で囲む
+
+```cpp
+char c = 'a';
+cout << c << endl; // a
+```
+
+#### 文字列と文字の関係
+
+- `文字列変数.at(i)`はchar型を返す
+
+```cpp
+string str = "Hello";
+char c = str.at(0);
+cout << c << endl; // H
+```
+
+#### 文字列の操作
+
+- 書き換え
+- 比較
+
+書き換えの例。
+
+```cpp
+string str = "Hello";
+str.at(0) = 'M';
+cout << str << endl; // Mello
+```
+
+比較の例。
+
+```cpp
+if (str.at(1) == 'e') {
+    cout << "AtCoder" << endl;
+}
+```
+
+#### ループとの組み合わせ
+
+```cpp
+string str;
+cin >> str;
+int count = 0;
+for (int i = 0; i < str.size(); i++) {
+    if (str.at(i) == 'O') {
+        count++;
+    }
+}
+cout << count << endl;
+```
+
+#### 注意点
+
+- 添字が範囲外の場合、実行時エラーが発生
+- 全角文字は正しく扱えない
+- 文字列のメンバ関数使用時は変数に格納するか、リテラルの末尾に's'をつける
+
+```cpp
+cout << "Hello"s.size() << endl; // 5
+```
+
+#### 文字列の比較
+
+- string型には比較演算子（==, !=, <, <=, >, >=）が定義されている
+- 辞書順で比較される（'0'~'9' → 'A'~'Z' → 'a'~'z'）
+
+```cpp
+string s1 = "ABC";
+string s2 = "XY";
+if (s1 < s2) {
+    cout << "ABC < XY" << endl;
+}
+```
+
+#### 文字列の連結
+
+- `+`演算子で文字列を連結できる
+- `+=`演算子も使用可能
+
+```cpp
+string hello = "Hello";
+cout << hello + ", world!" << endl;
+hello += ", AtCoder!";
+```
+
+#### stringとcharの比較と連結
+
+- string型とchar型は`==`で直接比較できない
+- string型とchar型は`+`で連結可能
+
+```cpp
+string str = "Hello";
+char c = str.at(0);
+cout << str + c << endl; // HelloH
+```
+
+#### char型の変数への入力
+
+- cinでchar型変数に入力すると、一文字ずつ取り出せる
+
+```cpp
+char a, b;
+cin >> a >> b;
+```
+
+#### エスケープシーケンス
+
+- 特殊な文字を表現するための記法
+- 主なエスケープシーケンス：
+  - `\n`: 改行
+  - `\"`: 二重引用符
+  - `\'`: 引用符
+  - `\\`: バックスラッシュ
+  - `\t`: タブ
+  - `\r`: 復帰
+
+```cpp
+cout << "こんにちは\nAtCoder";
+```
+
+#### 行単位での入力
+
+- `getline(cin, 変数名)`で行単位の入力が可能
+- 空白を含む文字列の入力に使用
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s;
+    getline(cin, s);
+    cout << s << endl;
+}
+```
+
+- 注意点
+  - `cin >> 変数名`の後に`getline`を使用する場合、間に`cin.ignore()`を挿入する必要がある
+  - これは`cin`が改行を読み飛ばさないため
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s, t;
+    cin >> s;
+    cin.ignore(); // この行を追加
+    getline(cin, t);
+    cout << s << endl;
+    cout << t << endl;
+}
+```
+
+#### 文字列の分割
+
+- `stringstream`を使用して文字列を分割できる
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s = "Hello AtCoder";
+    stringstream ss(s);
+    string word;
+    while (ss >> word) {
+        cout << word << endl;
+    }
+}
+```
+
+#### 文字列から数値への変換
+
+- `stoi(文字列)`：文字列をint型に変換
+- `stoll(文字列)`：文字列をlong long型に変換
+- `stod(文字列)`：文字列をdouble型に変換
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string s = "100";
+    int x = stoi(s);
+    cout << x + 1 << endl; // 101
+}
+```
+
 ### 配列
+
+#### 配列の基本
+
+- 配列は様々なデータの列を扱う機能
+- 宣言: `vector<型> 配列変数名;`
+- 初期化: `配列変数名 = { 要素1, 要素2, ... };`
+
+```cpp
+vector<int> vec;
+vec = {25, 100, 64};
+```
+
+#### 配列の要素へのアクセス
+
+- `配列変数.at(i)`: i番目の要素にアクセス
+- 添字は0から始まる
+
+```cpp
+cout << vec.at(0) << endl; // 25
+```
+
+#### 配列の大きさ
+
+- `配列変数.size()`: 配列の要素数を取得
+
+```cpp
+cout << vec.size() << endl; // 3
+```
+
+#### 配列の初期化
+
+- `vector<型> 配列変数名(要素数)`: 指定した要素数で初期化
+
+```cpp
+vector<int> vec(3); // {0, 0, 0}
+```
+
+#### 配列への入力
+
+- for文を使用して入力を受け取る
+
+```cpp
+int N;
+cin >> N;
+vector<int> vec(N);
+for (int i = 0; i < N; i++) {
+    cin >> vec.at(i);
+}
+```
+
+#### 配列の応用
+
+- 複数の変数を一度に扱える
+- for文と組み合わせて大量のデータを処理
+
+```cpp
+vector<int> math(N), english(N);
+for (int i = 0; i < N; i++) {
+    cin >> math.at(i);
+}
+for (int i = 0; i < N; i++) {
+    cin >> english.at(i);
+}
+for (int i = 0; i < N; i++) {
+    cout << math.at(i) + english.at(i) << endl;
+}
+```
+
+#### その他の機能
+
+- 初期値の指定: `vector<型> 配列名(要素数, 初期値);`
+- 要素の追加: `配列変数.push_back(値);`
+
+```cpp
+vector<int> vec(3, 5); // {5, 5, 5}
+vec.push_back(10); // {5, 5, 5, 10}
+```
+
+#### 注意点
+
+- 範囲外アクセスに注意
+- `at()`を使用することで範囲外アクセス時にエラーメッセージを得られる
+
+#### vector以外の配列
+
+C++には3種類の主な配列の宣言方法がある。
+
+1. vectorによる配列: `vector<int> data(3);`
+2. Cの配列: `int data;`
+3. arrayによる配列: `array<int, 3> data;`
+
+#### 注意点
+
+- Cの配列は落とし穴が多いため、基本的にはvectorを使用することが推奨される
+- AtCoderの模範解答ではCの配列が使われることもあるため、両方の記法を理解しておくことが有用
+
+#### atを使わないアクセス方法
+
+- `配列変数[添字]`でも要素にアクセス可能
+- しかし、この方法は範囲外アクセス時にエラーメッセージを表示しない
+- デバッグの容易さから、`配列変数.at(添字)`の使用が推奨される
+
+```cpp
+vector<int> vec = {1, 2, 3};
+cout << vec[0] << endl; // 1 (atを使わないアクセス)
+cout << vec.at(0) << endl; // 1 (atを使うアクセス)
+```
+
+#### 配列の初期化方法
+
+複数の初期化方法が存在する。
+
+1. 要素を直接指定: `vector<int> vec = {1, 2, 3};`
+2. サイズと初期値を指定: `vector<int> vec(3, 0);` // {0, 0, 0}
+3. サイズのみ指定（デフォルト値で初期化）: `vector<int> vec(3);` // {0, 0, 0}
+
+#### 多次元配列
+
+- vectorを入れ子にすることで多次元配列を作成可能
+
+```cpp
+vector<vector<int>> vec(3, vector<int>(4));
+```
+
+これは3行4列の2次元配列を作成する。
+
 ### 組み込み関数(STL)
+
+#### STLの関数の基本
+
+- STL(Standard Template Library): C++で用意されている関数等のまとまり
+- 関数呼び出し: `関数名(引数1, 引数2, ...)`
+- 引数: 関数に渡す値
+- 返り値（戻り値）: 関数の計算結果
+
+#### 主要なSTL関数
+
+##### min関数
+
+- 機能: 2つの引数のうち小さい方の値を返す
+
+```cpp
+int answer = min(10, 5);
+cout << answer << endl; // 5
+```
+
+##### max関数
+
+- 機能: 2つの引数のうち大きい方の値を返す
+
+```cpp
+int answer = max(10, 5);
+cout << answer << endl; // 10
+```
+
+##### swap関数
+
+- 機能: 2つの引数の値を交換する
+
+```cpp
+int a = 10, b = 5;
+swap(a, b);
+cout << a << " " << b << endl; // 5 10
+```
+
+#### 配列を引数にする関数
+
+##### reverse関数
+
+- 機能: 配列の要素の並びを逆にする
+
+```cpp
+vector<int> vec = {1, 5, 3};
+reverse(vec.begin(), vec.end());
+// vec は {3, 5, 1} になる
+```
+
+##### sort関数
+
+- 機能: 配列の要素を小さい順に並び替える
+
+```cpp
+vector<int> vec = {2, 5, 2, 1};
+sort(vec.begin(), vec.end());
+// vec は {1, 2, 2, 5} になる
+```
+
+#### 注意点
+
+- 引数と返り値の型は関数によって決まっている
+- 型が合わないとコンパイルエラーになる
+- 配列を引数にする関数は特殊な形式で呼び出す: `関数名(配列変数.begin(), 配列変数.end())`
+
+#### 応用
+
+- sort関数とreverse関数を組み合わせて大きい順にソート
+
+```cpp
+vector<int> vec = {2, 5, 2, 1};
+sort(vec.begin(), vec.end());
+reverse(vec.begin(), vec.end());
+// vec は {5, 2, 2, 1} になる
+```
+
+#### 引数で関数を呼び出した場合の実行順序
+
+- 関数の引数として別の関数を呼び出す場合、内側の関数から実行される
+
+```cpp
+min(max(1, 2), 3)
+```
+
+- 実行順序
+  1. `max(1, 2)` が実行され、結果は2
+  2. `min(2, 3)` が実行され、最終結果は2
+
+#### 引数の実行順序
+
+- 引数の実行順序は環境によって異なる
+- APG4bの推奨環境（GCC, C++）では、最後の引数の式から順に実行される
+
+```cpp
+min(1 + 1, 2 + 2)
+```
+
+- GCCでの実行順序
+  1. `2 + 2` が実行され、4になる
+  2. `1 + 1` が実行され、2になる
+  3. `min(2, 4)` が実行され、最終結果は2
+- 他の環境(Clang等)では、最初の引数の式から順に実行されることがある
+
+- Clangでの実行順序
+  1. `1 + 1` が実行され、2になる
+  2. `2 + 2` が実行され、4になる
+  3. `min(2, 4)` が実行され、最終結果は2
+
+#### 注意点
+
+- この挙動の違いが問題になるケースは少ないが、自作関数を定義する際には注意が必要
+- 環境依存の挙動に頼らないコーディングが推奨される
+
 ### 関数の定義と使用
+
+#### 関数の定義
+
+- 構文: `返り値の型 関数名(引数1の型 引数1の名前, 引数2の型 引数2の名前,...) { 処理 }`
+
+```cpp
+int my_min(int x, int y) {
+    if (x < y) {
+        return x;
+    } else {
+        return y;
+    }
+}
+```
+
+#### 返り値の指定
+
+- `return 返り値;` で指定
+- 返り値がない場合は `void` を使用し、`return;` と書く
+
+#### 引数がない関数
+
+- `()` だけを書く
+
+```cpp
+int input() {
+    int x;
+    cin >> x;
+    return x;
+}
+```
+
+#### 関数の動作
+
+- 関数呼び出し時に引数の値がコピーされる
+- return文に到達すると関数の処理が終了する
+
+#### 注意点
+
+- 返り値の指定忘れに注意（未定義の値が返る可能性）
+- 引数はコピーされるため、関数内での変更は呼び出し元に影響しない
+
+#### 関数が呼び出せる範囲
+
+- 関数は宣言した行より後でしか呼び出せない
+- プロトタイプ宣言を使用すると、定義前に呼び出し可能
+
+#### その他の機能
+
+- 関数のオーバーロード：同じ名前で異なる引数の関数を定義可能
+- main関数：特別な関数で、returnを省略すると0を返す
+
+#### 変数のスコープ
+
+- 関数内の変数は、その関数内でのみ有効
+
+#### サンプルコード
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int my_min(int x, int y) {
+    if (x < y) {
+        return x;
+    } else {
+        return y;
+    }
+}
+
+void hello(string text) {
+    cout << "Hello, " << text << endl;
+}
+
+int main() {
+    int answer = my_min(10, 5);
+    cout << answer << endl;  // 5
+
+    hello("C++");  // Hello, C++
+
+    return 0;
+}
+```
+
+#### プロトタイプ宣言
+
+- 関数を定義する前に呼び出すためのテクニック
+- 構文: `返り値の型 関数名(引数1の型, 引数2の型, ...);`
+- 引数名は省略可能
+
+```cpp
+void hello(); // プロトタイプ宣言
+int main() {
+    hello(); // プロトタイプ宣言により呼び出し可能
+}
+void hello() {
+    cout << "hello!" << endl;
+}
+```
+
+#### returnの省略
+
+- 返り値がない関数（void型）では、関数末尾のreturnを省略可能
+
+#### main関数の特殊性
+
+- returnを省略した場合、自動的に0が返される
+
+#### 関数のオーバーロード
+
+- 同じ名前で異なる引数の型や数の関数を定義可能
+- 返り値の型だけが異なる場合はオーバーロードできない
+
+```cpp
+int my_min(int x, int y) { /* ... */ }
+int my_min(int x, int y, int z) { /* ... */ }
+```
+
+#### 複雑な引数の条件指定
+
+- テンプレートを使用することで、より柔軟な引数の条件指定が可能
+- 例：「大小比較ができる型なら何でも良い」など
+
+#### 変数のスコープ
+
+- 関数内の変数は、その関数のスコープ内でのみ有効
+- 同じ名前の変数でも、異なる関数内では別の変数として扱われる
+
+```cpp
+void test() {
+    int num = 5;
+    cout << num << endl; // 5
+}
+int main() {
+    int num = 10;
+    test();
+    cout << num << endl; // 10
+}
+```
 
 ## 参考
 
