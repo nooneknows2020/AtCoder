@@ -1459,9 +1459,11 @@ int main() {
 
 ```cpp
 void hello(); // プロトタイプ宣言
+
 int main() {
     hello(); // プロトタイプ宣言により呼び出し可能
 }
+
 void hello() {
     cout << "hello!" << endl;
 }
