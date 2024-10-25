@@ -1256,8 +1256,6 @@ vector<vector<int>> vec(3, vector<int>(4));
 
 ### 組み込み関数(STL)
 
-#### STLの関数の基本
-
 - STL(Standard Template Library):C++で用意されている関数等のまとまり
 - 関数呼び出し:`関数名(引数1, 引数2, ...)`
 - 引数:関数に渡す値
@@ -1265,27 +1263,21 @@ vector<vector<int>> vec(3, vector<int>(4));
 
 #### 主要なSTL関数
 
-##### min関数
-
-- 機能:2つの引数のうち小さい方の値を返す
+##### min関数:2つの引数のうち小さい方の値を返す
 
 ```cpp
 int answer = min(10, 5);
 cout << answer << endl; // 5
 ```
 
-##### max関数
-
-- 機能:2つの引数のうち大きい方の値を返す
+##### max関数:2つの引数のうち大きい方の値を返す
 
 ```cpp
 int answer = max(10, 5);
 cout << answer << endl; // 10
 ```
 
-##### swap関数
-
-- 機能:2つの引数の値を交換する
+##### swap関数:2つの引数の値を交換する
 
 ```cpp
 int a = 10, b = 5;
@@ -1295,9 +1287,7 @@ cout << a << " " << b << endl; // 5 10
 
 #### 配列を引数にする関数
 
-##### reverse関数
-
-- 機能:配列の要素の並びを逆にする
+##### reverse関数:配列の要素の並びを逆にする
 
 ```cpp
 vector<int> vec = {1, 5, 3};
@@ -1305,9 +1295,7 @@ reverse(vec.begin(), vec.end());
 // vec は {3, 5, 1} になる
 ```
 
-##### sort関数
-
-- 機能:配列の要素を小さい順に並び替える
+##### sort関数:配列の要素を小さい順に並び替える
 
 ```cpp
 vector<int> vec = {2, 5, 2, 1};
@@ -1679,7 +1667,7 @@ vector<vector<int>> data = {
 };
 ```
 
-#### 例題コード
+#### サンプルコード
 
 ```cpp
 #include <bits/stdc++.h>
@@ -1715,7 +1703,7 @@ int main() {
 vector<vector<vector<要素の型>>> 変数名(要素数1, vector<vector<要素の型>>(要素数2, vector<要素の型>(要素数3, 初期値)));
 ```
 
-#### 例題コード
+#### サンプルコード
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2172,7 +2160,7 @@ int main() {
 
 ##### O(N log N)の例
 
-マージソートなどの効率的なソートアルゴリズムの計算量です。
+マージソートなどの効率的なソートアルゴリズムの計算量。
 
 ```cpp
 void merge_sort(vector<int>& arr, int left, int right) {
