@@ -2203,6 +2203,1520 @@ O(1) < O(log N) < O(N) < O(N log N) < O(N^2) < O(2^N) < O(N!)
 - 不要な計算の削除：冗長な処理を避ける
 
 ## 第3章:競技プログラミングに役立つ知識
+
+### 数値型
+
+#### 整数型の範囲
+
+- int型の範囲: -2,147,483,648 から 2,147,483,647
+- int64_t型の範囲: -9,223,372,036,854,775,808 から 9,223,372,036,854,775,807
+
+#### オーバーフロー
+
+計算の途中で扱える範囲を超えることをオーバーフローといい、正しく計算が行えなくなる。
+
+```cpp
+int a = 2000000000;
+int b = a * 2; // オーバーフロー発生
+cout << b << endl; // -294967296 (誤った結果)
+```
+
+#### int64_t型の使用
+
+int型より大きい値を扱いたいときはint64_t型を使う。
+
+```cpp
+int64_t a = 2000000000;
+int64_t b = a * 2;
+cout << b << endl; // 4000000000 (正しい結果)
+```
+
+#### リテラルの表記
+
+int64_t型のリテラルには末尾に'LL'をつける。
+
+```cpp
+cout << 2000000000LL * 2LL << endl; // int64_t * int64_t -> int64_t
+```
+
+#### double型の出力精度指定
+
+```cpp
+cout << fixed << setprecision(桁数);
+cout << 3.14159265358979 << endl;
+```
+
+#### 型変換（キャスト）
+
+- 明示的キャスト: `(型)値`
+- 暗黙的キャスト: 異なる型同士の演算時に自動的に行われる
+
+```cpp
+int a = 5;
+cout << (double)a << endl; // int型をdouble型に変換
+
+double b = 3.141592;
+cout << (int)b << endl; // double型をint型に変換（小数点以下切り捨て）
+```
+
+#### 暗黙的キャストのルール
+
+- int型とdouble型 → double型
+- int型とint64_t型 → int64_t型
+- double型とint64_t型 → double型
+
+#### 注意点
+
+- double型の精度は約16桁
+- 情報落ちと桁落ちに注意（大きな数と小さな数の演算、近い値同士の引き算）
+
+#### 浮動小数点数の誤差
+
+浮動小数点数（double型）は正確な値を表現できないことがある。
+
+```cpp
+double x = 0.1 + 0.2;
+if (x == 0.3) {
+    cout << "x is 0.3" << endl;
+} else {
+    cout << "x is not 0.3" << endl;
+}
+// 出力: x is not 0.3
+```
+
+#### 浮動小数点数の比較
+
+誤差を考慮して比較する必要がある。
+
+```cpp
+#include <cmath>
+
+double a = 0.1 + 0.2;
+double b = 0.3;
+if (abs(a - b) < 1e-10) {
+    cout << "a and b are approximately equal" << endl;
+}
+```
+
+#### 整数型の使い分け
+
+- int: 一般的な整数
+- long long: より大きな整数（int64_tと同じ）
+- unsigned int: 0以上の整数のみ
+
+#### 符号なし整数型（unsigned）
+
+```cpp
+unsigned int a = 4294967295; // 最大値
+cout << a + 1 << endl; // 0 (オーバーフローして0に戻る)
+```
+
+#### ビット演算
+
+整数型ではビット演算が可能。
+
+```cpp
+int a = 5;  // 0101 in binary
+int b = 3;  // 0011 in binary
+cout << (a & b) << endl; // 1 (ビットAND)
+cout << (a | b) << endl; // 7 (ビットOR)
+cout << (a ^ b) << endl; // 6 (ビットXOR)
+cout << (a << 1) << endl; // 10 (左シフト)
+cout << (a >> 1) << endl; // 2 (右シフト)
+```
+
+#### 数値リテラルの表記
+
+- 16進数: 0xで始める（例：0xFF）
+- 8進数: 0で始める（例：077）
+- 2進数: 0bで始める（C++14以降、例：0b1010）
+
+#### 数値の範囲を表す定数
+
+```cpp
+#include <limits>
+cout << numeric_limits<int>::max() << endl; // intの最大値
+cout << numeric_limits<int>::min() << endl; // intの最小値
+```
+
+#### double型の精度と誤差
+
+##### 精度の限界
+
+- double型は約16桁の数字の並びを保持できる
+- 16桁を超える小数は正確に扱えない
+
+###### 情報落ち
+
+- 極端に差が大きい2つの数の足し算で発生
+- 小さい方の数の情報が失われる
+- 対策：なるべく小さい数から順に足し算を行う
+
+```cpp
+double x = 1000000000;
+double y = 0.000000001;
+double z = x + y; // yの情報が失われる
+```
+
+##### 桁落ち
+
+- 極端に差が小さい2つの数の引き算で発生
+- 計算結果の精度が落ちる
+- 対策：
+  - 引き算の差が大きくなるように計算順序を工夫
+  - 引き算をなるべく行わないように工夫
+
+#### printfでの出力
+
+- coutの代替として使用可能
+- 精度指定や多数の値の出力に便利
+
+```cpp
+int x = 12345;
+double pi = 3.141592653589793;
+printf("x = %d, pi = %.10f\n", x, pi);
+```
+
+- printf関数の主な書式指定子
+    - %d：int型
+    - %lld：int64_t型
+    - %f：float型、double型
+    - %s：string型（C言語形式の文字列）
+
+#### scanfでの入力
+
+- `scanf`関数を使用して入力を受け取ることができる
+- `cin`よりも高速だが、安全性に欠ける面がある
+
+```cpp
+int x;
+scanf("%d", &x);
+```
+
+- 主な書式指定子
+    - `%d`: int型
+    - `%lld`: int64_t型
+    - `%f`: float型
+    - `%lf`: double型
+    - `%s`: string型（C言語形式の文字列）
+
+#### 注意点
+
+- `&`をつけ忘れないよう注意
+- string型の変数に入力する場合は特別な処理が必要
+
+#### 浮動小数点数の誤差
+
+- 浮動小数点数（float型、double型）は内部的に2進数で表現されるため、10進数で表現できない値がある
+- 例：0.1は2進数で正確に表現できない
+
+```cpp
+double x = 0.1 + 0.2;
+if (x == 0.3) {
+    cout << "x is 0.3" << endl;
+} else {
+    cout << "x is not 0.3" << endl;
+}
+// 出力: x is not 0.3
+```
+
+- 対策
+    - 誤差を考慮して比較を行う
+
+```cpp
+if (abs(x - 0.3) < 1e-10) {
+    cout << "x is approximately 0.3" << endl;
+}
+```
+
+## まとめ
+
+- `scanf`は高速だが安全性に注意が必要
+- 浮動小数点数の比較は誤差を考慮して行う
+- 精度が重要な計算では、適切な型の選択と誤差への対策が必要
+
+#### 文字列との変換
+
+##### 数値から文字列への変換
+
+`to_string`関数を使用する。
+
+```cpp
+int num = 123;
+string s = to_string(num);  // "123"
+```
+
+##### 文字列から数値への変換
+
+- 整数型への変換：`stoi`関数（string to integer）
+- 浮動小数点型への変換：`stod`関数（string to double）
+
+```cpp
+string s1 = "123";
+int num1 = stoi(s1);  // 123
+
+string s2 = "3.14";
+double num2 = stod(s2);  // 3.14
+```
+
+- 注意点
+    - 変換できない文字列の場合、例外が発生する
+    - 整数型への変換時、小数点以下は切り捨てられる
+
+#### 数値の範囲を表す定数
+
+`<limits>`ヘッダを使用して、各数値型の最大値と最小値を取得できます。
+
+```cpp
+#include <limits>
+cout << numeric_limits<int>::max() << endl;  // intの最大値
+cout << numeric_limits<int>::min() << endl;  // intの最小値
+```
+
+#### まとめ
+
+- 文字列と数値の相互変換には専用の関数が用意されている
+- `to_string`：数値から文字列への変換
+- `stoi`, `stod`：文字列から数値への変換
+- `<limits>`を使用して各数値型の範囲を取得できる
+
+### pair/tupleとauto
+
+#### pair
+
+pair型は2つの値の組を表す。
+
+```cpp
+// 宣言・初期化
+pair<string, int> p("abc", 3);
+
+// アクセス
+cout << p.first << endl;  // "abc":1つ目の値
+cout << p.second << endl;  // 3:2つ目の値
+
+// 生成
+p = make_pair("*", 1);
+
+// 分解
+string s;
+int a;
+tie(s, a) = p;
+cout << s << endl;  // *
+cout << a << endl;  // 1
+```
+
+#### tuple
+
+tuple型は複数個の値の組を表す。
+
+```cpp
+// 宣言・初期化
+tuple<int, string, bool> data(1, "hello", true);
+
+// アクセス
+cout << get<1>(data) << endl;  // "hello":1番目にアクセス
+
+// 生成
+data = make_tuple(2, "WORLD", true);
+
+// 分解
+int a;
+string s;
+bool f;
+tie(a, s, f) = data;
+cout << a << " " << s << " " << f << endl;  // 2 WORLD 1
+```
+
+#### pair/tupleの比較
+
+比較は1番目の要素から順に行われる。
+
+```cpp
+pair<int, int> a(3, 1);
+pair<int, int> b(2, 10);
+if (a < b) {
+    cout << "a < b" << endl;
+} else {
+    cout << "a >= b" << endl;
+}
+// 出力: a >= b
+```
+
+pairやtupleの配列をソートする場合も上記の比較順序でソートされる。
+
+```cpp
+vector<tuple<int, int, int>> a;
+a.push_back(make_tuple(3, 1, 1));
+a.push_back(make_tuple(1, 2, 100));
+a.push_back(make_tuple(3, 5, 1));
+a.push_back(make_tuple(1, 2, 3));
+sort(a.begin(), a.end());
+
+for (tuple<int, int, int> t : a) {
+    int x, y, z;
+    tie(x, y, z) = t;
+    cout << x << " " << y << " " << z << endl;
+}
+// 出力
+// 1 2 3
+// 1 2 100
+// 3 1 1
+// 3 5 1
+```
+
+#### auto
+
+型推論を行い、変数宣言を簡略化する。
+
+```cpp
+vector<int> c = {1, 2, 3};
+for (auto elem : c) {
+    cout << elem << endl; // // elemはint型
+}
+```
+
+#### 参照とauto
+
+```cpp
+int a = 12345;
+auto &ref = a;  // aへの参照 `int &ref = a;`と書くのと同じ
+vector<int> b = {1, 2, 3};
+for (auto &elem : b) {
+    elem *= 2;
+}
+```
+
+#### ignore
+
+pairやtupleを分解する際に、不要な要素を捨てることができる。
+
+```cpp
+pair<int, int> p(3, 5);
+int right;
+tie(ignore, right) = p; // 2番目の値だけ取り出す
+cout << right << endl;  // 5
+
+tuple<int, string, bool> tpl(2, "hello", false);
+int x;
+string s;
+tie(x, s, ignore) = tpl; // 1番目の値、2番目の値だけ取り出す
+cout << x << " " << s << endl;  // 2 hello
+```
+
+#### 型エイリアス
+
+型に別の名前をつけることができる。
+
+```cpp
+using pii = pair<int, int>;
+pii p = make_pair(1, 2);
+cout << "(" << p.first << ", " << p.second << ")" << endl;  // (1, 2)
+
+using vi = vector<int>;
+using vvi = vector<vi>;
+int N = 10, M = 20;
+vvi data(N, vi(M));  // N * M の2次元配列
+```
+
+#### 多次元配列での活用
+
+型エイリアスを使用して、多次元配列の宣言を簡略化できる。
+
+```cpp
+using vi = vector<int>;
+using vvi = vector<vi>;
+using vvvi = vector<vvi>;
+
+vvvi space(10, vvi(20, vi(30)));  // 10x20x30の3次元配列
+```
+
+#### typedef（古い方法）
+
+型エイリアスの古い書き方。
+
+```cpp
+typedef pair<int, int> pii;
+pii p = make_pair(1, 2);
+cout << "(" << p.first << ", " << p.second << ")" << endl;  // (1, 2)
+```
+
+#### 注意点
+
+- `auto`を過度に使用すると、コードの可読性が低下する場合がある
+- 型エイリアスは適切な名前を付けることが重要
+- `typedef`よりも`using`を使用することが推奨されている
+
+### STLのコンテナ(標準テンプレートライブラリ)
+
+#### map
+
+- 連想配列や辞書と呼ばれるデータ構造
+- キーと値のペアを保存
+
+#### 宣言
+
+```cpp
+map<Keyの型, Valueの型> 変数名;
+```
+
+#### 主な操作
+
+```cpp
+map<string, int> score;
+score["Alice"] = 100;  // 値の追加
+score.erase("Bob");    // 値の削除
+cout << score.at("Alice");  // 値へのアクセス
+if (score.count("Charlie")) { /* 存在判定 */ }
+cout << score.size();  // 要素数の取得
+```
+
+#### ループ
+
+```cpp
+for (auto p : score) {
+    cout << p.first << " => " << p.second << endl;
+}
+```
+
+#### queue
+
+- キューや待ち行列と呼ばれるデータ構造
+- 先入れ先出し（FIFO）の原則で動作
+
+#### 宣言
+
+```cpp
+queue<型> 変数名;
+```
+
+#### 主な操作
+
+```cpp
+queue<int> q;
+q.push(10);  // 要素の追加
+cout << q.front();  // 先頭要素へのアクセス
+q.pop();  // 先頭要素の削除
+cout << q.size();  // 要素数の取得
+```
+
+### priority_queue
+
+- 優先度付きキューと呼ばれるデータ構造
+- 最大の要素を効率的に取り出せる
+
+#### 宣言
+
+```cpp
+priority_queue<型> 変数名;
+```
+
+#### 主な操作
+
+```cpp
+priority_queue<int> pq;
+pq.push(10);  // 要素の追加
+cout << pq.top();  // 最大要素の取得
+pq.pop();  // 最大要素の削除
+cout << pq.size();  // 要素数の取得
+```
+
+#### 最小値を取り出す場合
+
+```cpp
+priority_queue<int, vector<int>, greater<int>> pq;
+```
+
+#### 使用例
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    priority_queue<int> pq;
+    pq.push(10);
+    pq.push(3);
+    pq.push(6);
+    pq.push(1);
+
+    // 空でない間繰り返す
+    while (!pq.empty()) {
+        cout << pq.top() << endl;  // 最大の値を出力
+        pq.pop();  // 最大の値を削除
+    }
+}
+```
+
+実行結果
+
+```
+10
+6
+3
+1
+```
+
+#### 最小値を取り出す優先度付きキュー
+
+デフォルトでは最大値を取り出すが、最小値を取り出すように設定することもできる。
+
+```cpp
+priority_queue<int, vector<int>, greater<int>> pq;
+```
+
+#### 計算量のまとめ
+
+各コンテナの主な操作の計算量をまとめると以下のようになる
+
+| コンテナ | 操作 | 計算量 |
+|----------|------|--------|
+| map      | 追加/削除/アクセス | O(log N) |
+| queue    | 追加/削除/アクセス | O(1) |
+| priority_queue | 追加/削除 | O(log N) |
+|           | 最大値アクセス | O(1) |
+
+#### 使い分け
+
+- map: キーと値のペアを管理する必要がある場合
+- queue: データを追加した順序で処理する必要がある場合
+- priority_queue: 常に最大値（または最小値）を取り出す必要がある場合
+
+#### 注意点
+
+- mapの[]演算子は存在しないキーにアクセスすると新しい要素を作成してしまうので注意が必要
+- queueとpriority_queueは、要素を追加したり削除したりすることはできるが、途中の要素に直接アクセスすることはできない
+
+## 5. priority_queue（続き）
+
+### 使用例（続き）
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    priority_queue<int> pq;
+    pq.push(10);
+    pq.push(3);
+    pq.push(6);
+    pq.push(1);
+
+    // 空でない間繰り返す
+    while (!pq.empty()) {
+        cout << pq.top() << endl;  // 最大の値を出力
+        pq.pop();  // 最大の値を削除
+    }
+}
+```
+
+実行結果
+
+```
+10
+6
+3
+1
+```
+
+#### 最小値を取り出す優先度付きキュー
+
+デフォルトでは最大値を取り出しますが、最小値を取り出すように設定することもできます。
+
+```cpp
+priority_queue<int, vector<int>, greater<int>> pq;
+```
+
+#### 計算量のまとめ
+
+各コンテナの主な操作の計算量をまとめると以下のようになります：
+
+| コンテナ | 操作 | 計算量 |
+|----------|------|--------|
+| map      | 追加/削除/アクセス | O(log N) |
+| queue    | 追加/削除/アクセス | O(1) |
+| priority_queue | 追加/削除 | O(log N) |
+|           | 最大値アクセス | O(1) |
+
+#### 使い分け
+
+- map: キーと値のペアを管理する必要がある場合
+- queue: データを追加した順序で処理する必要がある場合
+- priority_queue: 常に最大値（または最小値）を取り出す必要がある場合
+
+#### 注意点
+
+- mapの[]演算子は存在しないキーにアクセスすると新しい要素を作成してしまうので注意が必要です。
+- queueとpriority_queueは、要素を追加したり削除したりすることはできますが、途中の要素に直接アクセスすることはできません。
+
+#### その他のSTLコンテナ
+
+- set: 重複を許さない要素の集合を管理
+- multiset: 重複を許す要素の集合を管理
+- stack: 後入れ先出し（LIFO）のデータ構造
+
+#### mapの[]演算子の注意点
+
+- `[]`演算子は存在しないキーにアクセスすると、新しい要素を作成してしまう
+- 意図しない要素の追加を避けるため、基本的には`.at()`を使用することが推奨される
+
+```cpp
+map<string, int> score;
+cout << score["Alice"] << endl;  // 0（新しい要素が作成される）
+```
+
+#### queueとpriority_queueの制約
+
+- 要素の追加と削除は可能だが、途中の要素に直接アクセスすることはできない
+- 常に先頭（queueの場合）や最大値（priority_queueの場合）の要素にのみアクセス可能
+
+#### priority_queueのカスタム比較関数
+
+- デフォルトでは最大値を取り出すが、カスタム比較関数を使用して動作を変更できる
+
+```cpp
+auto comp = [](int a, int b) { return a > b; };
+priority_queue<int, vector<int>, decltype(comp)> pq(comp);
+```
+
+#### mapの順序
+
+- mapは内部でキーを昇順にソートして保持している
+- キーの型には比較演算子（<）が定義されている必要がある
+
+#### 計算量の重要性
+
+- コンテナの選択は、必要な操作の計算量を考慮して行うべき
+- 例えば、最大値を頻繁に取り出す必要がある場合は、vectorよりもpriority_queueの方が効率的
+
+#### その他のSTLコンテナ
+
+- set: 重複を許さない要素の集合
+- multiset: 重複を許す要素の集合
+- stack: 後入れ先出し（LIFO）のデータ構造
+
+#### set
+
+- 重複を許さない要素の集合を管理するコンテナ
+- 要素の追加、削除、存在確認が高速（O(log N)）
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    set<int> S;
+    S.insert(3);
+    S.insert(7);
+    S.insert(8);
+    S.insert(10);
+    S.erase(7);
+
+    cout << S.size() << endl;  // 3
+    if (S.count(7)) {
+        cout << "7 is in S" << endl;
+    } else {
+        cout << "7 is not in S" << endl;
+    }
+
+    for (auto x : S) {
+        cout << x << " ";  // 3 8 10
+    }
+    cout << endl;
+}
+```
+
+#### multiset
+
+- setと似ているが、重複する要素を許容する
+- 要素の個数を管理できる
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    multiset<int> MS;
+    MS.insert(3);
+    MS.insert(7);
+    MS.insert(7);
+    MS.insert(8);
+    MS.insert(10);
+    MS.erase(7);  // 7をすべて削除
+
+    cout << MS.size() << endl;  // 3
+    cout << MS.count(7) << endl;  // 0
+
+    for (auto x : MS) {
+        cout << x << " ";  // 3 8 10
+    }
+    cout << endl;
+}
+```
+
+#### stack
+
+- 後入れ先出し（LIFO）のデータ構造
+- 最後に追加した要素のみにアクセス可能
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    stack<int> S;
+    S.push(3);
+    S.push(7);
+    S.push(1);
+
+    while (!S.empty()) {
+        cout << S.top() << " ";  // 1 7 3
+        S.pop();
+    }
+    cout << endl;
+}
+```
+
+#### 使い分け
+
+- set: 重複を許さない集合が必要な場合
+- multiset: 重複を許す集合が必要な場合、または要素の個数を管理したい場合
+- stack: 最後に追加した要素のみを扱う必要がある場合
+
+これらのコンテナは、それぞれ特定の用途に適しています。setとmultisetは要素の順序付けと高速な検索が必要な場合に有用で、stackは履歴の管理や深さ優先探索などのアルゴリズムで使用されます。適切なコンテナを選択することで、効率的なプログラムを作成できます。
+
+APG4bの1.24「STLのコンテナ」の「細かい話」セクションの「deque」以降を体系的にまとめると以下のようになります：
+
+#### deque（デック）
+
+- 両端キュー（double-ended queue）
+- 先頭と末尾の両方から要素の追加・削除が可能
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    deque<int> d;
+    d.push_front(10);  // 先頭に追加
+    d.push_back(20);   // 末尾に追加
+    d.pop_front();     // 先頭を削除
+    d.pop_back();      // 末尾を削除
+
+    d.push_back(30);
+    d.push_front(40);
+
+    for (int x : d) {
+        cout << x << " ";  // 40 30
+    }
+    cout << endl;
+}
+```
+
+#### bitset
+
+- ビット列を扱うためのコンテナ
+- メモリ効率が良く、ビット演算が高速
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    bitset<8> bs1(131);  // 10000011
+    bitset<8> bs2(63);   // 00111111
+
+    cout << (bs1 & bs2) << endl;  // 00000011
+    cout << (bs1 | bs2) << endl;  // 10111111
+    cout << (bs1 ^ bs2) << endl;  // 10111100
+}
+```
+
+#### array
+
+- 固定長の配列
+- サイズを変更できないが、vectorより効率的
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    array<int, 3> arr = {1, 2, 3};
+    
+    for (int x : arr) {
+        cout << x << " ";  // 1 2 3
+    }
+    cout << endl;
+
+    cout << arr.size() << endl;  // 3
+}
+```
+
+#### コンテナアダプタ
+
+- stack、queue、priority_queueはコンテナアダプタ
+- 基底となるコンテナを指定可能
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    // デフォルトはvector<int>
+    stack<int> s1;
+    
+    // listを基底コンテナとして使用
+    stack<int, list<int>> s2;
+
+    s1.push(10);
+    s2.push(20);
+
+    cout << s1.top() << endl;  // 10
+    cout << s2.top() << endl;  // 20
+}
+```
+
+#### unordered_map
+
+- ハッシュテーブルを使用した連想配列
+- mapより高速だが、キーの順序は保持されない
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    unordered_map<string, int> um;
+    um["apple"] = 5;
+    um["banana"] = 3;
+    
+    cout << um["apple"] << endl;  // 5
+    cout << um.count("cherry") << endl;  // 0
+}
+```
+
+#### unordered_set
+
+- ハッシュテーブルを使用した集合
+- setより高速だが、要素の順序は保持されない
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    unordered_set<int> us;
+    us.insert(5);
+    us.insert(3);
+    us.insert(5);  // 重複は無視される
+    
+    cout << us.size() << endl;  // 2
+    cout << us.count(3) << endl;  // 1
+}
+```
+
+#### lower_bound / upper_bound (STLの関数)
+
+- ソート済みの範囲で二分探索を行う関数
+- lower_bound: 指定した値以上の最初の要素を返す
+- upper_bound: 指定した値より大きい最初の要素を返す
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {1, 3, 3, 5, 7};
+    
+    auto it1 = lower_bound(v.begin(), v.end(), 3);
+    cout << *it1 << endl;  // 3
+    cout << it1 - v.begin() << endl;  // 1 (インデックス)
+    
+    auto it2 = upper_bound(v.begin(), v.end(), 3);
+    cout << *it2 << endl;  // 5
+    cout << it2 - v.begin() << endl;  // 3 (インデックス)
+}
+```
+
+#### 空のコンテナに対する操作
+
+- 多くの操作は空のコンテナに対しても安全
+- ただし、front(), back(), pop()などは未定義動作を引き起こす可能性がある
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v;
+    cout << v.size() << endl;  // 0
+    v.push_back(1);  // OK
+    
+    queue<int> q;
+    if (!q.empty()) {
+        q.pop();  // 空でない場合のみpop
+    }
+    
+    // 注意: 以下は未定義動作
+    // cout << v.front() << endl;  // 空のvectorのfrontにアクセス
+    // q.pop();  // 空のqueueに対してpop
+}
+```
+
+### 構造体
+
+#### 構造体の概要
+
+- 複数の型をまとめた新しい型を作成できる
+- STLのpair/tupleも構造体を使って実装されている
+
+#### 構造体の定義
+
+```cpp
+struct 構造体名 {
+    型1 メンバ変数名1;
+    型2 メンバ変数名2;
+    // ...
+};
+```
+
+#### 構造体の宣言と初期化
+
+```cpp
+構造体名 変数名;
+構造体名 変数名 = {メンバ変数1の値, メンバ変数2の値, ...};
+```
+
+#### メンバ変数へのアクセス
+
+```cpp
+オブジェクト.メンバ変数
+```
+
+#### メンバ関数の定義と使用
+
+```cpp
+struct MyStruct {
+    int x;
+    void print() {
+        cout << "x = " << x << endl;
+    }
+};
+
+MyStruct obj;
+obj.print();
+```
+
+#### サンプルプログラム
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct MyPair {
+    int x;
+    string y;
+    
+    void print() {
+        cout << "x = " << x << endl;
+        cout << "y = " << y << endl;
+    }
+};
+
+int main() {
+    MyPair p = {12345, "Hello"};
+    p.print();
+    
+    MyPair q = {67890, "APG4b"};
+    q.print();
+}
+```
+
+#### コンストラクタ
+
+- オブジェクト作成時の初期化処理を定義できる
+- 引数を取ることも可能
+- 複数のコンストラクタを定義可能
+
+```cpp
+struct MyStruct {
+    MyStruct() { /* 初期化処理 */ }
+    MyStruct(int x) { /* 引数を使った初期化処理 */ }
+};
+```
+
+#### コピーコンストラクタ
+   - オブジェクトのコピー時に呼ばれる特殊なコンストラクタ
+   - 定義しない場合、デフォルトのコピーコンストラクタが自動生成される
+
+```cpp
+struct MyStruct {
+    MyStruct(const MyStruct &old) { /* コピー処理 */ }
+};
+```
+
+#### コピーコンストラクタ
+   - 自動生成されるコピーコンストラクタは、多くの場合で十分な機能を提供する
+   - カスタムのコピーコンストラクタは、特別な初期化や深いコピーが必要な場合に使用する
+
+```cpp
+struct MyStruct {
+    int* data;
+    MyStruct(const MyStruct& old) {
+        data = new int(*old.data);  // ディープコピー
+    }
+};
+```
+
+#### 構造体のネスト
+
+- 構造体の中に別の構造体を含めることができる
+
+```cpp
+struct OuterStruct {
+    int x;
+    struct InnerStruct {
+        string y;
+    } inner;
+};
+
+OuterStruct obj;
+obj.x = 10;
+obj.inner.y = "Hello";
+```
+
+#### 構造体の配列
+
+- 構造体の配列を作成することができる
+
+```cpp
+struct Point {
+    int x, y;
+};
+
+Point points[3] = {{1, 2}, {3, 4}, {5, 6}};
+```
+
+#### 構造体のポインタ
+
+- 構造体へのポインタを使用できる
+- アロー演算子（->）を使ってメンバにアクセスする
+
+```cpp
+struct MyStruct {
+    int x;
+    void print() { cout << x << endl; }
+};
+
+MyStruct* ptr = new MyStruct;
+ptr->x = 10;
+ptr->print();
+delete ptr;
+```
+
+#### 構造体の前方宣言
+
+- 構造体の完全な定義の前に、その存在を宣言できる
+
+```cpp
+struct B;  // 前方宣言
+
+struct A {
+    B* b_ptr;
+};
+
+struct B {
+    A a;
+};
+```
+
+#### コンストラクタ
+- オブジェクト作成時に自動的に呼ばれる特殊な関数
+- 初期化処理を行うために使用
+- 定義方法
+
+```cpp
+struct 構造体名 {
+    構造体名() {
+        // 初期化処理
+    }
+};
+```
+
+- 引数を取ることも可能
+- 複数のコンストラクタを定義可能（オーバーロード）
+
+#### コンストラクタの呼び出し
+
+- 通常の宣言：`構造体名 オブジェクト名;`
+- 引数付きコンストラクタ：`構造体名 オブジェクト名(引数1, 引数2, ...);`
+- 初期化リスト使用：`構造体名 オブジェクト名 = {引数1, 引数2, ...};`
+
+#### コピーコンストラクタ
+- 既存のオブジェクトから新しいオブジェクトを作成する際に呼ばれる
+- 定義方法
+
+```cpp
+struct 構造体名 {
+    構造体名(const 構造体名 &old) {
+        // コピー処理
+    }
+};
+```
+
+- 明示的に定義しない場合、デフォルトのコピーコンストラクタが自動生成される
+- デフォルトのコピーコンストラクタは全てのメンバ変数を単純にコピーする
+
+#### コピーコンストラクタが呼ばれる場合
+
+- 関数の引数としてオブジェクトを渡す場合
+- `構造体名 新オブジェクト = 既存オブジェクト;` の形で初期化する場合
+- `構造体名 新オブジェクト(既存オブジェクト);` の形で初期化する場合
+
+#### 演算子オーバーロード
+
+- 構造体に対して演算子の動作を定義できる機能
+- 例：`+`, `-`, `*`, `/`, `==`, `<`, `>`など
+
+#### メンバ関数としての演算子オーバーロード
+
+```cpp
+struct MyPair {
+    int x;
+    string y;
+    MyPair operator+(const MyPair& other) {
+        MyPair ret;
+        ret.x = x + other.x;
+        ret.y = y + other.y;
+        return ret;
+    }
+};
+```
+
+#### フリー関数としての演算子オーバーロード
+
+```cpp
+struct MyPair {
+    int x;
+    string y;
+};
+
+MyPair operator+(const MyPair& a, const MyPair& b) {
+    MyPair ret;
+    ret.x = a.x + b.x;
+    ret.y = a.y + b.y;
+    return ret;
+}
+```
+
+#### 入出力演算子のオーバーロード
+
+```cpp
+ostream& operator<<(ostream& os, const MyPair& p) {
+    os << "(" << p.x << ", " << p.y << ")";
+    return os;
+}
+
+istream& operator>>(istream& is, MyPair& p) {
+    is >> p.x >> p.y;
+    return is;
+}
+```
+
+#### 注意点
+
+- 演算子の優先順位は変更できない
+- 新しい演算子は定義できない
+- 一部の演算子（`=`, `[]`, `->`, `()`）はメンバ関数としてのみ定義可能
+
+#### 使用例
+
+```cpp
+MyPair a = {1, "Hello"};
+MyPair b = {2, "World"};
+MyPair c = a + b;  // operator+が呼ばれる
+cout << c;  // operator<<が呼ばれる
+```
+
+### ビット演算
+
+#### ビットとビット列
+
+- ビット：「0」か「1」の2通りの状態を表現できるデータの単位
+- ビット列：ビットを複数並べたもの
+
+#### ビット演算の種類
+
+a) AND演算 (&)：両方のビットが1の場合のみ1
+b) OR演算 (|)：少なくとも一方のビットが1の場合に1
+c) XOR演算 (^)：どちらか一方のビットが1の場合のみ1
+d) NOT演算 (~)：ビットを反転
+e) 左シフト演算 (<<)：ビット列を左にずらす
+f) 右シフト演算 (>>)：ビット列を右にずらす
+
+#### ビット演算の使い道
+
+- 集合の操作（共通部分、和集合、補集合など）
+- 高速な演算
+
+#### C++でのビット演算：bitsetの使用
+   
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    bitset<8> a("00011011");
+    bitset<8> b("00110101");
+
+    cout << "AND: " << (a & b) << endl;
+    cout << "OR:  " << (a | b) << endl;
+    cout << "XOR: " << (a ^ b) << endl;
+    cout << "NOT a: " << (~a) << endl;
+    cout << "Left shift a by 2: " << (a << 2) << endl;
+    cout << "Right shift a by 1: " << (a >> 1) << endl;
+}
+```
+
+#### bitsetの主な操作
+
+- 初期化：`bitset<ビット数> 変数名("ビット列");`
+- ビットの設定：`変数.set(位置, 値);`
+- ビットの取得：`変数.test(位置);`
+
+#### 注意点
+
+- ビット演算の演算子の優先順位に注意（括弧を使用して明示的に指定することを推奨）
+- bitsetのビット数は定数でなければならない
+
+#### 整数型を用いたビット演算
+
+- 通常64ビットまでのビット列を扱える
+- unsigned long long型を使用すると便利
+
+
+#### ビット演算の使い道
+
+a) 集合の操作
+b) 高速な演算
+
+#### 集合の操作
+
+- ビット列を用いて集合を表現
+- 例：1〜10の数が書かれたカードの手札を10ビットのビット列で表現
+
+```cpp
+// 手札 {2, 3, 7} を表現
+bitset<10> hand("0110001000");
+```
+
+#### 集合の操作とビット演算の対応
+
+- 共通部分：AND演算 (&)
+- 和集合：OR演算 (|)
+- 補集合：NOT演算 (~)
+
+```cpp
+bitset<10> A("1110101000");  // {1, 2, 3, 5, 7}
+bitset<10> B("1010101010");  // {1, 3, 5, 7, 9}
+bitset<10> common = A & B;   // {1, 3, 5, 7}
+```
+
+#### STLのbitset
+
+a) 宣言・初期化
+
+```cpp
+bitset<4> b("1010");
+```
+
+b) ビット演算
+
+```cpp
+bitset<8> a("00011011");
+bitset<8> b("00110101");
+auto c = a & b;
+cout << c << endl;  // 00010001
+cout << (c << 1) << endl;  // 00100010
+```
+
+c) その他の操作
+
+```cpp
+bitset<8> bs("10101010");
+bs.set(1, 1);  // 2番目のビットを1に設定
+cout << bs.test(3) << endl;  // 4番目のビットの値を取得
+cout << bs.count() << endl;  // 1のビットの数を数える
+```
+
+#### 注意点
+
+- bitsetのビット数は定数でなければならない
+- ビット演算の演算子の優先順位に注意（括弧を使用して明示的に指定することを推奨）
+
+#### 整数型を用いたビット演算
+
+- unsigned long long型を使用すると64ビットまでのビット列を扱える
+```cpp
+unsigned long long x = 0b1010101010101010;  // 2進数リテラル
+unsigned long long y = 0xAAAA;  // 16進数リテラル
+cout << (x & y) << endl;
+```
+
+#### 整数とビット列の対応
+
+- 整数は内部的にビット列として表現されている
+- 符号なし整数型（unsigned int, unsigned long long等）を使用すると、そのビット表現を直接扱える
+
+#### 整数リテラルの2進数・16進数表記
+
+- 2進数: `0b`プレフィックスを使用（例：`0b1010`）
+- 16進数: `0x`プレフィックスを使用（例：`0xA`）
+
+#### 整数型を用いたビット演算
+
+```cpp
+unsigned long long x = 0b1010101010101010;
+unsigned long long y = 0xAAAA;
+cout << (x & y) << endl;
+```
+
+#### 整数型のビット数
+
+- unsigned int: 通常32ビット
+- unsigned long long: 通常64ビット
+
+#### ビット演算の応用例：集合の要素数を数える
+
+```cpp
+unsigned int x = 0b00101010;
+int count = 0;
+for (int i = 0; i < 32; i++) {
+    if (x & (1U << i)) {
+        count++;
+    }
+}
+cout << count << endl;  // 3
+```
+
+#### ビルトイン関数を使用した効率的な実装
+
+- `__builtin_popcount(x)`: 32ビット整数xの1のビットの数を数える
+- `__builtin_popcountll(x)`: 64ビット整数xの1のビットの数を数える
+
+```cpp
+unsigned long long x = 0b1010101010101010;
+cout << __builtin_popcountll(x) << endl;  // 8
+```
+
+#### 注意点
+
+- ビット演算の演算子の優先順位に注意（括弧を使用して明示的に指定することを推奨）
+- シフト演算で大きな値を指定すると未定義動作になる可能性がある
+
+
+### その他の有用な機能
+
+#### 文字コード
+
+- コンピュータ内部では文字を数値として扱う
+- ASCII文字コードが一般的に使用される
+
+```cpp
+cout << (int)'A' << endl;  // 65
+cout << (char)65 << endl;  // A
+```
+
+#### char型の演算
+
+- 四則演算や比較が可能
+
+```cpp
+for (int i = 0; i <= ('Z' - 'A'); i++) {
+    cout << (char)('A' + i);
+}
+```
+
+#### グローバル変数
+
+- 関数の外で宣言された変数
+- プログラム全体がスコープ
+
+```cpp
+int global_var = 10;
+void func() {
+    global_var = 20;
+}
+```
+
+#### const修飾子
+
+- 変数を定数として扱う
+
+```cpp
+const int MAX_SIZE = 100;
+bitset<MAX_SIZE> bs;
+```
+
+#### 条件演算子（三項演算子）
+
+- if文を短く書ける
+
+```cpp
+int min_value = (a < b) ? a : b;
+```
+
+#### 論理演算の実行順序
+
+- `&&`と`||`は左から評価し、結果が確定したら中断
+
+```cpp
+if (x != 0 && 100 / x > 5) {
+    // xが0の場合、100/xは評価されない
+}
+```
+
+#### マクロ
+
+- プリプロセッサによるコード置換
+
+```cpp
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+```
+
+#### ラムダ式
+
+- 関数内で関数を定義
+
+```cpp
+auto sum = [](int a, int b) { return a + b; };
+cout << sum(3, 4) << endl;  // 7
+```
+
+#### do-while文とnext_permutation
+
+- 順列の全列挙
+
+```cpp
+vector<int> v = {1, 2, 3};
+do {
+    for (int x : v) cout << x << " ";
+    cout << endl;
+} while (next_permutation(v.begin(), v.end()));
+```
+
+#### goto文
+
+- 多重ループからの脱出に便利
+```cpp
+for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 10; j++) {
+        if (condition) goto LOOP_END;
+    }
+}
+LOOP_END:
+// ループを抜けた後の処理
+```
+
 ## 第4章:今まで説明していなかったこと
 
 
