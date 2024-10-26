@@ -140,7 +140,7 @@ cout << "d" << endl; // "cd"と出力
 
 - 全角スペース
   - エラーメッセージに`stray '\343' in program`などが表示される
-  - エラー箇所は`./Main.cpp:行:文字目: error`で特定可能
+  - エラー箇所は`./Main.cpp:行:文字目:error`で特定可能
 - セミコロン忘れ
   - エラーメッセージに`expected ';' before...`が表示される
   - エラー箇所はメッセージが示す次の行を確認
@@ -2246,17 +2246,17 @@ cout << fixed << setprecision(桁数);
 cout << 3.14159265358979 << endl;
 ```
 
-#### 型変換（キャスト）
+#### 型変換(キャスト)
 
-- 明示的キャスト: `(型)値`
-- 暗黙的キャスト: 異なる型同士の演算時に自動的に行われる
+- 明示的キャスト:`(型)値`
+- 暗黙的キャスト:異なる型同士の演算時に自動的に行われる
 
 ```cpp
 int a = 5;
 cout << (double)a << endl; // int型をdouble型に変換
 
 double b = 3.141592;
-cout << (int)b << endl; // double型をint型に変換（小数点以下切り捨て）
+cout << (int)b << endl; // double型をint型に変換(小数点以下切り捨て)
 ```
 
 #### 暗黙的キャストのルール
@@ -2268,11 +2268,11 @@ cout << (int)b << endl; // double型をint型に変換（小数点以下切り�
 #### 注意点
 
 - double型の精度は約16桁
-- 情報落ちと桁落ちに注意（大きな数と小さな数の演算、近い値同士の引き算）
+- 情報落ちと桁落ちに注意(大きな数と小さな数の演算、近い値同士の引き算)
 
 #### 浮動小数点数の誤差
 
-浮動小数点数（double型）は正確な値を表現できないことがある。
+浮動小数点数(double型)は正確な値を表現できないことがある。
 
 ```cpp
 double x = 0.1 + 0.2;
@@ -2281,7 +2281,7 @@ if (x == 0.3) {
 } else {
     cout << "x is not 0.3" << endl;
 }
-// 出力: x is not 0.3
+// 出力:x is not 0.3
 ```
 
 #### 浮動小数点数の比較
@@ -2300,11 +2300,11 @@ if (abs(a - b) < 1e-10) {
 
 #### 整数型の使い分け
 
-- int: 一般的な整数
-- long long: より大きな整数（int64_tと同じ）
-- unsigned int: 0以上の整数のみ
+- int:一般的な整数
+- long long:より大きな整数(int64_tと同じ)
+- unsigned int:0以上の整数のみ
 
-#### 符号なし整数型（unsigned）
+#### 符号なし整数型(unsigned)
 
 ```cpp
 unsigned int a = 4294967295; // 最大値
@@ -2327,16 +2327,18 @@ cout << (a >> 1) << endl; // 2 (右シフト)
 
 #### 数値リテラルの表記
 
-- 16進数: 0xで始める（例：0xFF）
-- 8進数: 0で始める（例：077）
-- 2進数: 0bで始める（C++14以降、例：0b1010）
+- 16進数:0xで始める(例：0xFF)
+- 8進数:0で始める(例：077)
+- 2進数:0bで始める(C++14以降、例：0b1010)
 
 #### 数値の範囲を表す定数
 
+`<limits>`ヘッダを使用して、各数値型の最大値と最小値を取得できる。
+
 ```cpp
 #include <limits>
-cout << numeric_limits<int>::max() << endl; // intの最大値
-cout << numeric_limits<int>::min() << endl; // intの最小値
+cout << numeric_limits<int>::max() << endl;  // intの最大値
+cout << numeric_limits<int>::min() << endl;  // intの最小値
 ```
 
 #### double型の精度と誤差
@@ -2362,7 +2364,7 @@ double z = x + y; // yの情報が失われる
 
 - 極端に差が小さい2つの数の引き算で発生
 - 計算結果の精度が落ちる
-- 対策：
+- 対策
   - 引き算の差が大きくなるように計算順序を工夫
   - 引き算をなるべく行わないように工夫
 
@@ -2381,7 +2383,7 @@ printf("x = %d, pi = %.10f\n", x, pi);
     - %d：int型
     - %lld：int64_t型
     - %f：float型、double型
-    - %s：string型（C言語形式の文字列）
+    - %s：string型(C言語形式の文字列)
 
 #### scanfでの入力
 
@@ -2394,20 +2396,19 @@ scanf("%d", &x);
 ```
 
 - 主な書式指定子
-    - `%d`: int型
-    - `%lld`: int64_t型
-    - `%f`: float型
-    - `%lf`: double型
-    - `%s`: string型（C言語形式の文字列）
+    - `%d`:int型
+    - `%lld`:int64_t型
+    - `%f`:float型
+    - `%lf`:double型
+    - `%s`:string型(C言語形式の文字列)
 
-#### 注意点
-
-- `&`をつけ忘れないよう注意
-- string型の変数に入力する場合は特別な処理が必要
+- 注意点
+    - `&`をつけ忘れないよう注意
+    - string型の変数に入力する場合は特別な処理が必要
 
 #### 浮動小数点数の誤差
 
-- 浮動小数点数（float型、double型）は内部的に2進数で表現されるため、10進数で表現できない値がある
+- 浮動小数点数(float型、double型)は内部的に2進数で表現されるため、10進数で表現できない値がある
 - 例：0.1は2進数で正確に表現できない
 
 ```cpp
@@ -2417,7 +2418,7 @@ if (x == 0.3) {
 } else {
     cout << "x is not 0.3" << endl;
 }
-// 出力: x is not 0.3
+// 出力:x is not 0.3
 ```
 
 - 対策
@@ -2429,7 +2430,7 @@ if (abs(x - 0.3) < 1e-10) {
 }
 ```
 
-## まとめ
+#### まとめ
 
 - `scanf`は高速だが安全性に注意が必要
 - 浮動小数点数の比較は誤差を考慮して行う
@@ -2448,8 +2449,8 @@ string s = to_string(num);  // "123"
 
 ##### 文字列から数値への変換
 
-- 整数型への変換：`stoi`関数（string to integer）
-- 浮動小数点型への変換：`stod`関数（string to double）
+- 整数型への変換：`stoi`関数(string to integer)
+- 浮動小数点型への変換：`stod`関数(string to double)
 
 ```cpp
 string s1 = "123";
@@ -2462,16 +2463,6 @@ double num2 = stod(s2);  // 3.14
 - 注意点
     - 変換できない文字列の場合、例外が発生する
     - 整数型への変換時、小数点以下は切り捨てられる
-
-#### 数値の範囲を表す定数
-
-`<limits>`ヘッダを使用して、各数値型の最大値と最小値を取得できます。
-
-```cpp
-#include <limits>
-cout << numeric_limits<int>::max() << endl;  // intの最大値
-cout << numeric_limits<int>::min() << endl;  // intの最小値
-```
 
 #### まとめ
 
@@ -2539,7 +2530,7 @@ if (a < b) {
 } else {
     cout << "a >= b" << endl;
 }
-// 出力: a >= b
+// 出力:a >= b
 ```
 
 pairやtupleの配列をソートする場合も上記の比較順序でソートされる。
@@ -2557,6 +2548,9 @@ for (tuple<int, int, int> t : a) {
     tie(x, y, z) = t;
     cout << x << " " << y << " " << z << endl;
 }
+```
+
+```
 // 出力
 // 1 2 3
 // 1 2 100
@@ -2571,7 +2565,7 @@ for (tuple<int, int, int> t : a) {
 ```cpp
 vector<int> c = {1, 2, 3};
 for (auto elem : c) {
-    cout << elem << endl; // // elemはint型
+    cout << elem << endl; // elemはint型
 }
 ```
 
@@ -2608,12 +2602,12 @@ cout << x << " " << s << endl;  // 2 hello
 型に別の名前をつけることができる。
 
 ```cpp
-using pii = pair<int, int>;
+using pii = pair<int, int>; // pair<int, int>型に pii という別名をつける
 pii p = make_pair(1, 2);
 cout << "(" << p.first << ", " << p.second << ")" << endl;  // (1, 2)
 
-using vi = vector<int>;
-using vvi = vector<vi>;
+using vi = vector<int>; // intの1次元の型に vi という別名をつける
+using vvi = vector<vi>; // intの2次元の型に vvi という別名をつける
 int N = 10, M = 20;
 vvi data(N, vi(M));  // N * M の2次元配列
 ```
@@ -2630,7 +2624,7 @@ using vvvi = vector<vvi>;
 vvvi space(10, vvi(20, vi(30)));  // 10x20x30の3次元配列
 ```
 
-#### typedef（古い方法）
+#### typedef(古い方法)
 
 型エイリアスの古い書き方。
 
@@ -2681,7 +2675,7 @@ for (auto p : score) {
 #### queue
 
 - キューや待ち行列と呼ばれるデータ構造
-- 先入れ先出し（FIFO）の原則で動作
+- 先入れ先出し(FIFO)の原則で動作
 
 #### 宣言
 
@@ -2720,13 +2714,7 @@ pq.pop();  // 最大要素の削除
 cout << pq.size();  // 要素数の取得
 ```
 
-#### 最小値を取り出す場合
-
-```cpp
-priority_queue<int, vector<int>, greater<int>> pq;
-```
-
-#### 使用例
+#### サンプルコード
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2747,9 +2735,8 @@ int main() {
 }
 ```
 
-実行結果
-
 ```
+// 出力
 10
 6
 3
@@ -2766,7 +2753,7 @@ priority_queue<int, vector<int>, greater<int>> pq;
 
 #### 計算量のまとめ
 
-各コンテナの主な操作の計算量をまとめると以下のようになる
+各コンテナの主な操作の計算量をまとめると以下のようになる。
 
 | コンテナ | 操作 | 計算量 |
 |----------|------|--------|
@@ -2777,96 +2764,34 @@ priority_queue<int, vector<int>, greater<int>> pq;
 
 #### 使い分け
 
-- map: キーと値のペアを管理する必要がある場合
-- queue: データを追加した順序で処理する必要がある場合
-- priority_queue: 常に最大値（または最小値）を取り出す必要がある場合
+- map:キーと値のペアを管理する必要がある場合
+- queue:データを追加した順序で処理する必要がある場合
+- priority_queue:常に最大値(または最小値)を取り出す必要がある場合
 
 #### 注意点
 
 - mapの[]演算子は存在しないキーにアクセスすると新しい要素を作成してしまうので注意が必要
 - queueとpriority_queueは、要素を追加したり削除したりすることはできるが、途中の要素に直接アクセスすることはできない
 
-## 5. priority_queue（続き）
-
-### 使用例（続き）
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    priority_queue<int> pq;
-    pq.push(10);
-    pq.push(3);
-    pq.push(6);
-    pq.push(1);
-
-    // 空でない間繰り返す
-    while (!pq.empty()) {
-        cout << pq.top() << endl;  // 最大の値を出力
-        pq.pop();  // 最大の値を削除
-    }
-}
-```
-
-実行結果
-
-```
-10
-6
-3
-1
-```
-
-#### 最小値を取り出す優先度付きキュー
-
-デフォルトでは最大値を取り出しますが、最小値を取り出すように設定することもできます。
-
-```cpp
-priority_queue<int, vector<int>, greater<int>> pq;
-```
-
-#### 計算量のまとめ
-
-各コンテナの主な操作の計算量をまとめると以下のようになります：
-
-| コンテナ | 操作 | 計算量 |
-|----------|------|--------|
-| map      | 追加/削除/アクセス | O(log N) |
-| queue    | 追加/削除/アクセス | O(1) |
-| priority_queue | 追加/削除 | O(log N) |
-|           | 最大値アクセス | O(1) |
-
-#### 使い分け
-
-- map: キーと値のペアを管理する必要がある場合
-- queue: データを追加した順序で処理する必要がある場合
-- priority_queue: 常に最大値（または最小値）を取り出す必要がある場合
-
-#### 注意点
-
-- mapの[]演算子は存在しないキーにアクセスすると新しい要素を作成してしまうので注意が必要です。
-- queueとpriority_queueは、要素を追加したり削除したりすることはできますが、途中の要素に直接アクセスすることはできません。
-
 #### その他のSTLコンテナ
 
-- set: 重複を許さない要素の集合を管理
-- multiset: 重複を許す要素の集合を管理
-- stack: 後入れ先出し（LIFO）のデータ構造
+- set:重複を許さない要素の集合を管理
+- multiset:重複を許す要素の集合を管理
+- stack:後入れ先出し(LIFO)のデータ構造
 
 #### mapの[]演算子の注意点
 
-- `[]`演算子は存在しないキーにアクセスすると、新しい要素を作成してしまう
 - 意図しない要素の追加を避けるため、基本的には`.at()`を使用することが推奨される
 
 ```cpp
 map<string, int> score;
-cout << score["Alice"] << endl;  // 0（新しい要素が作成される）
+cout << score["Alice"] << endl;  // 0(新しい要素が作成される)
 ```
 
 #### queueとpriority_queueの制約
 
 - 要素の追加と削除は可能だが、途中の要素に直接アクセスすることはできない
-- 常に先頭（queueの場合）や最大値（priority_queueの場合）の要素にのみアクセス可能
+- 常に先頭(queueの場合)や最大値(priority_queueの場合)の要素にのみアクセス可能
 
 #### priority_queueのカスタム比較関数
 
@@ -2880,7 +2805,7 @@ priority_queue<int, vector<int>, decltype(comp)> pq(comp);
 #### mapの順序
 
 - mapは内部でキーを昇順にソートして保持している
-- キーの型には比較演算子（<）が定義されている必要がある
+- キーの型には比較演算子(<)が定義されている必要がある
 
 #### 計算量の重要性
 
@@ -2889,14 +2814,58 @@ priority_queue<int, vector<int>, decltype(comp)> pq(comp);
 
 #### その他のSTLコンテナ
 
-- set: 重複を許さない要素の集合
-- multiset: 重複を許す要素の集合
-- stack: 後入れ先出し（LIFO）のデータ構造
+- set:重複を許さない要素の集合
+- multiset:重複を許す要素の集合
+- stack:後入れ先出し(LIFO)のデータ構造
 
 #### set
 
 - 重複を許さない要素の集合を管理するコンテナ
-- 要素の追加、削除、存在確認が高速（O(log N)）
+- 要素の追加、削除、存在確認が高速(O(log N))
+
+#### 宣言
+
+```cpp
+set<値の型> 変数名;
+```
+
+#### 主な操作
+
+```cpp
+// 値の追加
+変数.insert(値);
+
+// 値の削除
+変数.erase(値);
+
+// 所属判定
+if (変数.count(値)) {
+  //「値」が含まれる
+}
+else {
+  //「値」は含まれない
+}
+
+// 要素数の取得
+変数.size()
+
+// 空であるかを調べる
+変数.empty()  // 空ならtrueを返す
+
+// 最小値の取得
+*begin(変数)
+
+// 最大値の取得
+*rbegin(変数)
+```
+
+#### ループ
+
+```cpp
+for (auto value : 変数名) {
+  // valueを使う
+}
+```
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2954,8 +2923,33 @@ int main() {
 
 #### stack
 
-- 後入れ先出し（LIFO）のデータ構造
+- 後入れ先出し(LIFO)のデータ構造
 - 最後に追加した要素のみにアクセス可能
+
+#### 宣言
+
+```cpp
+stack<値の型> 変数名;
+```
+
+#### 主な操作
+
+```cpp
+// 値の追加
+変数.push(値);
+
+// 次の値へのアクセス
+変数.top();
+
+// 値の削除
+変数.pop();
+
+// 要素数の取得
+変数.size();
+
+// 空であるかを調べる
+変数.empty();  // 空ならtrueを返す
+```
 
 ```cpp
 #include <bits/stdc++.h>
@@ -2977,18 +2971,43 @@ int main() {
 
 #### 使い分け
 
-- set: 重複を許さない集合が必要な場合
-- multiset: 重複を許す集合が必要な場合、または要素の個数を管理したい場合
-- stack: 最後に追加した要素のみを扱う必要がある場合
+- set:重複を許さない集合が必要な場合
+- multiset:重複を許す集合が必要な場合、または要素の個数を管理したい場合
+- stack:最後に追加した要素のみを扱う必要がある場合
 
-これらのコンテナは、それぞれ特定の用途に適しています。setとmultisetは要素の順序付けと高速な検索が必要な場合に有用で、stackは履歴の管理や深さ優先探索などのアルゴリズムで使用されます。適切なコンテナを選択することで、効率的なプログラムを作成できます。
+#### deque(デック)
 
-APG4bの1.24「STLのコンテナ」の「細かい話」セクションの「deque」以降を体系的にまとめると以下のようになります：
-
-#### deque（デック）
-
-- 両端キュー（double-ended queue）
+- 両端キュー(double-ended queue)
 - 先頭と末尾の両方から要素の追加・削除が可能
+
+#### 宣言
+
+```cpp
+deque<値の型> 変数名;
+```
+
+#### 主な操作
+
+```cpp
+// 値の追加
+変数.push_back(値);   // 末尾への値の追加
+変数.push_front(値);  // 先頭への値の追加
+
+// 値のアクセス
+変数.front()  // 先頭の値へのアクセス
+変数.back()   // 末尾の値へのアクセス
+変数.at(i)  // i番目へのアクセス
+
+// 値の削除
+変数.pop_front();  // 先頭の要素の削除
+変数.pop_back();   // 末尾の要素の削除
+
+// 要素数の取得
+変数.size();
+
+// 空であるかを調べる
+変数.empty();  // 空ならtrueを返す
+```
 
 ```cpp
 #include <bits/stdc++.h>
@@ -3008,46 +3027,6 @@ int main() {
         cout << x << " ";  // 40 30
     }
     cout << endl;
-}
-```
-
-#### bitset
-
-- ビット列を扱うためのコンテナ
-- メモリ効率が良く、ビット演算が高速
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    bitset<8> bs1(131);  // 10000011
-    bitset<8> bs2(63);   // 00111111
-
-    cout << (bs1 & bs2) << endl;  // 00000011
-    cout << (bs1 | bs2) << endl;  // 10111111
-    cout << (bs1 ^ bs2) << endl;  // 10111100
-}
-```
-
-#### array
-
-- 固定長の配列
-- サイズを変更できないが、vectorより効率的
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    array<int, 3> arr = {1, 2, 3};
-    
-    for (int x : arr) {
-        cout << x << " ";  // 1 2 3
-    }
-    cout << endl;
-
-    cout << arr.size() << endl;  // 3
 }
 ```
 
@@ -3114,27 +3093,34 @@ int main() {
 }
 ```
 
-#### lower_bound / upper_bound (STLの関数)
+#### lower_bound / upper_bound(STLの関数)
 
 - ソート済みの範囲で二分探索を行う関数
-- lower_bound: 指定した値以上の最初の要素を返す
-- upper_bound: 指定した値より大きい最初の要素を返す
+- lower_bound:指定した値以上の最初の要素を返す
+- upper_bound:指定した値より大きい最初の要素を返す
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-    vector<int> v = {1, 3, 3, 5, 7};
-    
-    auto it1 = lower_bound(v.begin(), v.end(), 3);
-    cout << *it1 << endl;  // 3
-    cout << it1 - v.begin() << endl;  // 1 (インデックス)
-    
-    auto it2 = upper_bound(v.begin(), v.end(), 3);
-    cout << *it2 << endl;  // 5
-    cout << it2 - v.begin() << endl;  // 3 (インデックス)
+  vector<int> a = {0, 10, 13, 14, 20};
+  // aにおいて、12 以上最小の要素は 13
+  cout << *lower_bound(a.begin(), a.end(), 12) << endl; // 13
+
+  // 14 以上最小の要素は 14
+  cout << *lower_bound(a.begin(), a.end(), 14) << endl; // 14
+
+  // 10 を超える最小の要素は 13
+  cout << *upper_bound(a.begin(), a.end(), 10) << endl; // 13
 }
+```
+
+#### 使い方
+
+```cpp
+*lower_bound(配列.begin(), 配列.end(), 値)  // 「値」以上の最小の値
+*upper_bound(配列.begin(), 配列.end(), 値)  // 「値」を超えるの最小の値
 ```
 
 #### 空のコンテナに対する操作
@@ -3156,7 +3142,7 @@ int main() {
         q.pop();  // 空でない場合のみpop
     }
     
-    // 注意: 以下は未定義動作
+    // 注意:以下は未定義動作
     // cout << v.front() << endl;  // 空のvectorのfrontにアクセス
     // q.pop();  // 空のqueueに対してpop
 }
@@ -3192,19 +3178,23 @@ struct 構造体名 {
 オブジェクト.メンバ変数
 ```
 
-#### メンバ関数の定義と使用
+#### メンバ関数の定義
 
 ```cpp
-struct MyStruct {
-    int x;
-    void print() {
-        cout << "x = " << x << endl;
-    }
+struct 構造体名 {
+  返り値の型 メンバ関数名(引数の型1 引数名1, 引数の型2 引数名2, ...) {
+    // 関数の内容
+    //   (ここではメンバ変数に直接アクセスすることができる)
+  }
 };
-
-MyStruct obj;
-obj.print();
 ```
+
+#### メンバ関数の呼び出し
+
+```cpp
+オブジェクト.メンバ関数(引数1, 引数2, ...);
+```
+
 
 #### サンプルプログラム
 
@@ -3233,38 +3223,110 @@ int main() {
 
 #### コンストラクタ
 
-- オブジェクト作成時の初期化処理を定義できる
+- オブジェクト作成時に自動的に呼ばれる特殊な関数
+- 初期化処理を行うために使用
 - 引数を取ることも可能
-- 複数のコンストラクタを定義可能
+- 複数のコンストラクタを定義可能(オーバーロード)
+
+#### コンストラクタの定義
 
 ```cpp
-struct MyStruct {
-    MyStruct() { /* 初期化処理 */ }
-    MyStruct(int x) { /* 引数を使った初期化処理 */ }
+struct 構造体名 {
+    構造体名() { /* 初期化処理 */ }
+    構造体名(int x) { /* 引数を使った初期化処理 */ }
 };
 ```
 
-#### コピーコンストラクタ
-   - オブジェクトのコピー時に呼ばれる特殊なコンストラクタ
-   - 定義しない場合、デフォルトのコピーコンストラクタが自動生成される
+#### コンストラクタの呼び出し
+
+- 通常の宣言：`構造体名 オブジェクト名;`
+- 引数付きコンストラクタ：`構造体名 オブジェクト名(引数1, 引数2, ...);`
+- 初期化リスト使用：`構造体名 オブジェクト名 = {引数1, 引数2, ...};`
+
+#### サンプルコード
 
 ```cpp
-struct MyStruct {
-    MyStruct(const MyStruct &old) { /* コピー処理 */ }
+#include <bits/stdc++.h>
+using namespace std;
+
+struct MyPair {
+  int x;
+  string y;
+  // コンストラクタ
+  MyPair() {
+    cout << "constructor called" << endl;
+  }
 };
+
+int main() {
+  MyPair p;  // ここでコンストラクタが呼ばれる
+  p.x = 12345;
+  p.y = "hello";
+  cout << "p.x = " << p.x << endl;
+  cout << "p.y = " << p.y << endl;
+}
 ```
 
 #### コピーコンストラクタ
-   - 自動生成されるコピーコンストラクタは、多くの場合で十分な機能を提供する
-   - カスタムのコピーコンストラクタは、特別な初期化や深いコピーが必要な場合に使用する
+
+-  関数の引数としてオブジェクトを渡す場合などの条件を満たした場合、コピーコンストラクタが呼ばれる
+- 明示的に定義しない場合、デフォルトのコピーコンストラクタが自動生成される
+- デフォルトのコピーコンストラクタは全てのメンバ変数を単純にコピーする
+
+#### コピーコンストラクタの定義
 
 ```cpp
-struct MyStruct {
-    int* data;
-    MyStruct(const MyStruct& old) {
-        data = new int(*old.data);  // ディープコピー
-    }
+struct 構造体名 {
+  // コピーコンストラクタ
+  構造体名(const 構造体名 &old) {
+    // コンストラクタの内容
+    // (oldの内容を使って初期化などを行う)
+  }
 };
+```
+
+#### コピーコンストラクタが呼ばれる場合
+
+- 関数の引数としてオブジェクトを渡す場合
+- `構造体名 新オブジェクト = 既存オブジェクト;` の形で初期化する場合
+- `構造体名 新オブジェクト(既存オブジェクト);` の形で初期化する場合
+
+#### サンプルコード
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct MyPair {
+  int x;
+  string y;
+  // コンストラクタ
+  MyPair() {
+    cout << "normal constructor called" << endl;
+  }
+  // コピーコンストラクタ
+  MyPair(const MyPair &old) {
+    cout << "copy constructor called" << endl;
+    x = old.x + 1;
+    y = old.y + " new";
+  }
+};
+
+int main() {
+  MyPair p;  // ここでコンストラクタが呼ばれる
+  p.x = 12345;
+  p.y = "hello";
+  cout << "p.x = " << p.x << endl;
+  cout << "p.y = " << p.y << endl;
+
+  MyPair q(p);  // コピーコンストラクタが呼ばれる
+  cout << "q.x = " << q.x << endl;
+  cout << "q.y = " << q.y << endl;
+
+  MyPair r = q;  // コピーコンストラクタが呼ばれる
+  cout << "r.x = " << r.x << endl;
+  cout << "r.y = " << r.y << endl;
+}
 ```
 
 #### 構造体のネスト
@@ -3299,7 +3361,7 @@ Point points[3] = {{1, 2}, {3, 4}, {5, 6}};
 #### 構造体のポインタ
 
 - 構造体へのポインタを使用できる
-- アロー演算子（->）を使ってメンバにアクセスする
+- アロー演算子(->)を使ってメンバにアクセスする
 
 ```cpp
 struct MyStruct {
@@ -3313,128 +3375,79 @@ ptr->print();
 delete ptr;
 ```
 
-#### 構造体の前方宣言
-
-- 構造体の完全な定義の前に、その存在を宣言できる
-
-```cpp
-struct B;  // 前方宣言
-
-struct A {
-    B* b_ptr;
-};
-
-struct B {
-    A a;
-};
-```
-
-#### コンストラクタ
-- オブジェクト作成時に自動的に呼ばれる特殊な関数
-- 初期化処理を行うために使用
-- 定義方法
-
-```cpp
-struct 構造体名 {
-    構造体名() {
-        // 初期化処理
-    }
-};
-```
-
-- 引数を取ることも可能
-- 複数のコンストラクタを定義可能（オーバーロード）
-
-#### コンストラクタの呼び出し
-
-- 通常の宣言：`構造体名 オブジェクト名;`
-- 引数付きコンストラクタ：`構造体名 オブジェクト名(引数1, 引数2, ...);`
-- 初期化リスト使用：`構造体名 オブジェクト名 = {引数1, 引数2, ...};`
-
-#### コピーコンストラクタ
-- 既存のオブジェクトから新しいオブジェクトを作成する際に呼ばれる
-- 定義方法
-
-```cpp
-struct 構造体名 {
-    構造体名(const 構造体名 &old) {
-        // コピー処理
-    }
-};
-```
-
-- 明示的に定義しない場合、デフォルトのコピーコンストラクタが自動生成される
-- デフォルトのコピーコンストラクタは全てのメンバ変数を単純にコピーする
-
-#### コピーコンストラクタが呼ばれる場合
-
-- 関数の引数としてオブジェクトを渡す場合
-- `構造体名 新オブジェクト = 既存オブジェクト;` の形で初期化する場合
-- `構造体名 新オブジェクト(既存オブジェクト);` の形で初期化する場合
-
 #### 演算子オーバーロード
 
 - 構造体に対して演算子の動作を定義できる機能
 - 例：`+`, `-`, `*`, `/`, `==`, `<`, `>`など
 
-#### メンバ関数としての演算子オーバーロード
+#### メンバ関数としての演算子オーバーロードの定義
 
 ```cpp
-struct MyPair {
-    int x;
-    string y;
-    MyPair operator+(const MyPair& other) {
-        MyPair ret;
-        ret.x = x + other.x;
-        ret.y = y + other.y;
-        return ret;
-    }
+struct 構造体の型 {
+  返り値の型 operator演算子(引数の型 引数) {
+    // 処理内容
+  }
 };
 ```
 
-#### フリー関数としての演算子オーバーロード
+#### サンプルコード
 
 ```cpp
-struct MyPair {
-    int x;
-    string y;
-};
+#include <bits/stdc++.h>
+using namespace std;
 
-MyPair operator+(const MyPair& a, const MyPair& b) {
+struct MyPair {
+  int x;
+  string y;
+  // 別のMyPair型のオブジェクトをとって、x, yにそれぞれ+したものを返す
+  // +演算子をオーバーロード
+  MyPair operator+(const MyPair &other) {
     MyPair ret;
-    ret.x = a.x + b.x;
-    ret.y = a.y + b.y;
+    ret.x = x + other.x;  // ここではint型の+演算子が呼ばれる
+    ret.y = y + other.y;  // ここではstring型の+演算子が呼ばれる
     return ret;
+  }
+};
+
+int main() {
+  MyPair a = {123, "hello"};
+  MyPair b = {456, "world"};
+
+  // MyPair型の+演算子が呼ばれる
+  MyPair c = a + b;
+
+  cout << "c.x = " << c.x << endl;
+  cout << "c.y = " << c.y << endl;
 }
 ```
 
-#### 入出力演算子のオーバーロード
+#### フリー関数としての演算子オーバーロードの定義
 
 ```cpp
-ostream& operator<<(ostream& os, const MyPair& p) {
-    os << "(" << p.x << ", " << p.y << ")";
-    return os;
-}
-
-istream& operator>>(istream& is, MyPair& p) {
-    is >> p.x >> p.y;
-    return is;
+返り値の型 operator演算子(引数の型1 引数1, 引数の型2 引数2) {
+  // 処理内容
 }
 ```
 
-#### 注意点
-
-- 演算子の優先順位は変更できない
-- 新しい演算子は定義できない
-- 一部の演算子（`=`, `[]`, `->`, `()`）はメンバ関数としてのみ定義可能
-
-#### 使用例
+#### サンプルコード
 
 ```cpp
-MyPair a = {1, "Hello"};
-MyPair b = {2, "World"};
-MyPair c = a + b;  // operator+が呼ばれる
-cout << c;  // operator<<が呼ばれる
+#include <bits/stdc++.h>
+using namespace std;
+
+pair<int, int> operator+(pair<int, int> a, pair<int, int> b) {
+  pair<int, int> ret;
+  ret.first = a.first + b.first;
+  ret.second = a.second + b.second;
+  return ret;
+}
+
+int main() {
+  pair<int, int> a = {1, 2};
+  pair<int, int> b = {3, 4};
+  auto c = a + b;
+  cout << c.first << ", " << c.second << endl;  // 4, 6
+}
 ```
 
 ### ビット演算
@@ -3446,16 +3459,16 @@ cout << c;  // operator<<が呼ばれる
 
 #### ビット演算の種類
 
-a) AND演算 (&)：両方のビットが1の場合のみ1
-b) OR演算 (|)：少なくとも一方のビットが1の場合に1
-c) XOR演算 (^)：どちらか一方のビットが1の場合のみ1
-d) NOT演算 (~)：ビットを反転
-e) 左シフト演算 (<<)：ビット列を左にずらす
-f) 右シフト演算 (>>)：ビット列を右にずらす
+- AND演算 (&)：両方のビットが1の場合のみ1
+- OR演算 (|)：少なくとも一方のビットが1の場合に1
+- XOR演算 (^)：どちらか一方のビットが1の場合のみ1
+- NOT演算 (~)：ビットを反転
+- 左シフト演算 (<<)：ビット列を左にずらす
+- 右シフト演算 (>>)：ビット列を右にずらす
 
 #### ビット演算の使い道
 
-- 集合の操作（共通部分、和集合、補集合など）
+- 集合の操作(共通部分、和集合、補集合など)
 - 高速な演算
 
 #### C++でのビット演算：bitsetの使用
@@ -3479,57 +3492,27 @@ int main() {
 
 #### bitsetの主な操作
 
-- 初期化：`bitset<ビット数> 変数名("ビット列");`
-- ビットの設定：`変数.set(位置, 値);`
-- ビットの取得：`変数.test(位置);`
+- 初期化：`bitset<ビット数> 変数名;`
+    - すべてのビットが0の状態で初期化される
+- 初期化：`bitset<ビット数> 変数名("ビット列(長さはビット数に合わせる)");`
+    - 指定したビット列で初期化される
+- ビットの値を設定：`変数.set(位置, 値);`
+- ビットの値を取得：`変数.test(位置);`
 
 #### 注意点
 
-- ビット演算の演算子の優先順位に注意（括弧を使用して明示的に指定することを推奨）
+- ビット演算の演算子の優先順位に注意(括弧を使用して明示的に指定することを推奨)
 - bitsetのビット数は定数でなければならない
-
-#### 整数型を用いたビット演算
-
-- 通常64ビットまでのビット列を扱える
-- unsigned long long型を使用すると便利
-
-
-#### ビット演算の使い道
-
-a) 集合の操作
-b) 高速な演算
-
-#### 集合の操作
-
-- ビット列を用いて集合を表現
-- 例：1〜10の数が書かれたカードの手札を10ビットのビット列で表現
-
-```cpp
-// 手札 {2, 3, 7} を表現
-bitset<10> hand("0110001000");
-```
-
-#### 集合の操作とビット演算の対応
-
-- 共通部分：AND演算 (&)
-- 和集合：OR演算 (|)
-- 補集合：NOT演算 (~)
-
-```cpp
-bitset<10> A("1110101000");  // {1, 2, 3, 5, 7}
-bitset<10> B("1010101010");  // {1, 3, 5, 7, 9}
-bitset<10> common = A & B;   // {1, 3, 5, 7}
-```
 
 #### STLのbitset
 
-a) 宣言・初期化
+#### 宣言・初期化
 
 ```cpp
 bitset<4> b("1010");
 ```
 
-b) ビット演算
+#### ビット演算
 
 ```cpp
 bitset<8> a("00011011");
@@ -3539,7 +3522,7 @@ cout << c << endl;  // 00010001
 cout << (c << 1) << endl;  // 00100010
 ```
 
-c) その他の操作
+#### その他の操作
 
 ```cpp
 bitset<8> bs("10101010");
@@ -3548,71 +3531,25 @@ cout << bs.test(3) << endl;  // 4番目のビットの値を取得
 cout << bs.count() << endl;  // 1のビットの数を数える
 ```
 
-#### 注意点
+#### 整数とビット列の対応
 
-- bitsetのビット数は定数でなければならない
-- ビット演算の演算子の優先順位に注意（括弧を使用して明示的に指定することを推奨）
+- 整数は内部的にビット列として表現されている
+- 符号なし整数型(unsigned int, unsigned long long等)を使用すると、そのビット表現を直接扱える
+
+#### 整数リテラルの2進数・16進数表記
+
+- 2進数:`0b`プレフィックスを使用(例：`0b1010`)
+- 16進数:`0x`プレフィックスを使用(例：`0xA`)
 
 #### 整数型を用いたビット演算
 
 - unsigned long long型を使用すると64ビットまでのビット列を扱える
-```cpp
-unsigned long long x = 0b1010101010101010;  // 2進数リテラル
-unsigned long long y = 0xAAAA;  // 16進数リテラル
-cout << (x & y) << endl;
-```
-
-#### 整数とビット列の対応
-
-- 整数は内部的にビット列として表現されている
-- 符号なし整数型（unsigned int, unsigned long long等）を使用すると、そのビット表現を直接扱える
-
-#### 整数リテラルの2進数・16進数表記
-
-- 2進数: `0b`プレフィックスを使用（例：`0b1010`）
-- 16進数: `0x`プレフィックスを使用（例：`0xA`）
-
-#### 整数型を用いたビット演算
 
 ```cpp
 unsigned long long x = 0b1010101010101010;
 unsigned long long y = 0xAAAA;
 cout << (x & y) << endl;
 ```
-
-#### 整数型のビット数
-
-- unsigned int: 通常32ビット
-- unsigned long long: 通常64ビット
-
-#### ビット演算の応用例：集合の要素数を数える
-
-```cpp
-unsigned int x = 0b00101010;
-int count = 0;
-for (int i = 0; i < 32; i++) {
-    if (x & (1U << i)) {
-        count++;
-    }
-}
-cout << count << endl;  // 3
-```
-
-#### ビルトイン関数を使用した効率的な実装
-
-- `__builtin_popcount(x)`: 32ビット整数xの1のビットの数を数える
-- `__builtin_popcountll(x)`: 64ビット整数xの1のビットの数を数える
-
-```cpp
-unsigned long long x = 0b1010101010101010;
-cout << __builtin_popcountll(x) << endl;  // 8
-```
-
-#### 注意点
-
-- ビット演算の演算子の優先順位に注意（括弧を使用して明示的に指定することを推奨）
-- シフト演算で大きな値を指定すると未定義動作になる可能性がある
-
 
 ### その他の有用な機能
 
@@ -3636,28 +3573,80 @@ for (int i = 0; i <= ('Z' - 'A'); i++) {
 }
 ```
 
+```
+// 出力
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
+
+- 比較の例
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+  char c = 'X';
+  if ('A' <= c && c <= 'Z') {
+    cout << "YES" << endl;
+  }
+  else {
+    cout << "NO" << endl;
+  }
+}
+```
+
+#### 大文字と小文字の変換
+
+```cpp
+(char)('x' + ('A' - 'a')); // 'X' 小文字→大文字
+(char)('X' - ('A' - 'a')); // 'x' 大文字→小文字
+```
+
+STLの関数を使うこともできる。
+
+```cpp
+(char)toupper(文字); // 小文字→大文字
+(char)tolower(文字); // 大文字→小文字
+```
+
 #### グローバル変数
 
 - 関数の外で宣言された変数
 - プログラム全体がスコープ
 
 ```cpp
-int global_var = 10;
-void func() {
-    global_var = 20;
+#include <bits/stdc++.h>
+using namespace std;
+
+//グローバル変数
+int number = 10;
+
+int main() {
+  cout << number << endl;
 }
 ```
+
+#### グローバル変数のスコープ
+
+- プログラム全体
+- 複数の関数をまたいで使うことができる
+
+#### グローバル変数名の衝突
+
+- 同じ名前のグローバル変数は宣言できない
+- まれにSTLで定義しているグローバル変数と衝突することもあるので注意
 
 #### const修飾子
 
 - 変数を定数として扱う
+- 「const修飾子を付けた変数」を使えば直接数値を書くこと無く、楽かつ安全にbitsetのビット数を指定できる
 
 ```cpp
 const int MAX_SIZE = 100;
 bitset<MAX_SIZE> bs;
 ```
 
-#### 条件演算子（三項演算子）
+#### 条件演算子(三項演算子)
 
 - if文を短く書ける
 
@@ -3675,9 +3664,65 @@ if (x != 0 && 100 / x > 5) {
 }
 ```
 
+#### &&と||の展開
+
+&&に関して以下の二つのプログラムはほとんど同じ意味になる。
+
+```cpp
+if (条件1 && 条件2) {
+  処理1
+}
+else {
+  処理2
+}
+```
+
+```cpp
+if (条件1) {
+  if (条件2) {
+    処理1
+  }
+  else {
+    処理2
+  }
+}
+else {
+  処理2
+}
+```
+
+||に関して以下の二つのプログラムはほとんど同じ意味になる。
+
+```cpp
+if (条件1 || 条件2) {
+  処理1
+}
+else {
+  処理2
+}
+```
+
+```cpp
+if (条件1) {
+  処理1
+}
+else if (条件2) {
+  処理1
+}
+else {
+  処理2
+}
+```
+
 #### マクロ
 
 - プリプロセッサによるコード置換
+
+#### 単純なマクロの記法
+
+```cpp
+#define マクロ名 置き換えるプログラム
+```
 
 ```cpp
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
@@ -3687,26 +3732,123 @@ if (x != 0 && 100 / x > 5) {
 
 - 関数内で関数を定義
 
+#### ラムダ式の記法
+
 ```cpp
-auto sum = [](int a, int b) { return a + b; };
-cout << sum(3, 4) << endl;  // 7
+auto 関数名 = [](引数の型1 引数名1, 引数の型2, 引数名2, ...) { 関数の処理 };
+```
+
+```cpp
+int main(){
+    auto sum = [](int a, int b) { return a + b; };
+    cout << sum(3, 4) << endl;  // 7   
+}
+```
+
+#### ラムダ式の外の変数の利用
+
+`[&]`と書くことでラムダ式の外の変数を利用できる。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+
+  // 最大値を保持する変数
+  int max_num = 0;
+
+  // 今まで受け取った値の中から最も大きな値を返す関数
+  auto update_max = [&](int n) {
+    if (max_num < n) {
+      max_num = n;
+    }
+    return max_num;
+  };
+
+  cout << update_max(5) << endl;
+  cout << update_max(2) << endl;
+  cout << update_max(10) << endl;
+  cout << update_max(4) << endl;
+}
+```
+
+```
+// 出力
+5
+5
+10
+10
+```
+
+#### ラムダ式による再帰関数
+
+ラムダ式で再帰呼び出しのある関数を定義する場合、autoではなくfunctionを型として指定する必要がある。次のプログラムは、0～Nの和を求める再帰関数sumをラムダ式で定義している。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+  // 再帰関数の定義
+  function<int(int)> sum = [&](int n) {
+    if (n == 0) {
+      return 0;
+    }
+    int s = sum(n - 1);
+    return s + n;
+  };
+
+  cout << sum(3) << endl;
+}
+```
+
+#### ラムダ式による再帰関数の記法
+
+```cpp
+function<返り値の型(引数の型1, 引数の型2, ...)> 関数名 = [&](引数の型1 引数名1, 引数の型2, 引数名2, ...) { 関数の処理 };
 ```
 
 #### do-while文とnext_permutation
 
 - 順列の全列挙
+- next_permutation関数:「順列の全列挙」を行うための関数
+
+#### next_permutation関数の使い方
 
 ```cpp
-vector<int> v = {1, 2, 3};
+sort(配列変数.begin(), 配列変数.end());
 do {
-    for (int x : v) cout << x << " ";
+  // 順列に対する処理
+} while (next_permutation(配列変数.begin(), 配列変数.end()));
+```
+
+```cpp
+vector<int> v = { 2, 1, 3 };
+sort(v.begin(), v.end());
+do {
+    // 1行で今の並び方を出力
+    for (int x : v) {
+        cout << x << " ";
+    }
     cout << endl;
 } while (next_permutation(v.begin(), v.end()));
+```
+
+```
+// 出力
+1 2 3 
+1 3 2 
+2 1 3 
+2 3 1 
+3 1 2 
+3 2 1
 ```
 
 #### goto文
 
 - 多重ループからの脱出に便利
+
 ```cpp
 for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
@@ -3716,6 +3858,10 @@ for (int i = 0; i < 10; i++) {
 LOOP_END:
 // ループを抜けた後の処理
 ```
+
+#### 注意点
+
+多重ループからの脱出など一部の状況では使っても良いが、goto文が必要になるケースはほとんどないので、基本的には使わないほうが良い。
 
 ## 第4章:今まで説明していなかったこと
 
