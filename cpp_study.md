@@ -2461,10 +2461,10 @@ for (tuple<int, int, int> t : a) {
 
 ```
 // 出力
-// 1 2 3
-// 1 2 100
-// 3 1 1
-// 3 5 1
+1 2 3
+1 2 100
+3 1 1
+3 5 1
 ```
 
 #### auto
@@ -2555,6 +2555,7 @@ cout << "(" << p.first << ", " << p.second << ")" << endl;  // (1, 2)
 - queue
 - priority_queue
 - set
+- multiset
 - stack
 - deque
 - unordered_map
