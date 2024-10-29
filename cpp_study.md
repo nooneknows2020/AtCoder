@@ -2657,11 +2657,21 @@ map<Keyの型, Valueの型> 変数名;
 
 ```cpp
 map<string, int> score;
-score["Alice"] = 100;  // 値の追加
-score.erase("Bob");    // 値の削除
-cout << score.at("Alice");  // 値へのアクセス
-if (score.count("Charlie")) { /* 存在判定 */ }
-cout << score.size();  // 要素数の取得
+
+// 値の追加
+score["Alice"] = 100;
+
+// 値の削除
+score.erase("Bob");
+
+// 値へのアクセス
+cout << score.at("Alice");
+
+// 存在判定
+if (score.count("Charlie")) {}
+
+// 要素数の取得
+cout << score.size();
 ```
 
 #### ループ
@@ -2670,6 +2680,15 @@ cout << score.size();  // 要素数の取得
 for (auto p : score) {
     cout << p.first << " => " << p.second << endl;
 }
+```
+
+#### mapの[]演算子の注意点
+
+- 意図しない要素の追加を避けるため、基本的には`.at()`を使用することが推奨される
+
+```cpp
+map<string, int> score;
+cout << score["Alice"] << endl;  // 0(新しい要素が作成される)
 ```
 
 #### queue
@@ -2687,10 +2706,18 @@ queue<型> 変数名;
 
 ```cpp
 queue<int> q;
-q.push(10);  // 要素の追加
-cout << q.front();  // 先頭要素へのアクセス
-q.pop();  // 先頭要素の削除
-cout << q.size();  // 要素数の取得
+
+// 要素の追加
+q.push(10);
+
+// 先頭要素へのアクセス
+cout << q.front();
+
+// 先頭要素の削除
+q.pop();
+
+// 要素数の取得
+cout << q.size();
 ```
 
 ### priority_queue
@@ -2708,10 +2735,18 @@ priority_queue<型> 変数名;
 
 ```cpp
 priority_queue<int> pq;
-pq.push(10);  // 要素の追加
-cout << pq.top();  // 最大要素の取得
-pq.pop();  // 最大要素の削除
-cout << pq.size();  // 要素数の取得
+
+// 要素の追加
+pq.push(10);
+
+// 最大要素の取得
+cout << pq.top();
+
+// 最大要素の削除
+pq.pop();
+
+// 要素数の取得
+cout << pq.size();
 ```
 
 #### サンプルコード
@@ -2743,6 +2778,8 @@ int main() {
 1
 ```
 
+queueとpriority_queueは、要素を追加したり削除したりすることはできるが、途中の要素に直接アクセスすることはできない。
+
 #### 最小値を取り出す優先度付きキュー
 
 デフォルトでは最大値を取り出すが、最小値を取り出すように設定することもできる。
@@ -2767,26 +2804,6 @@ priority_queue<int, vector<int>, greater<int>> pq;
 - map:キーと値のペアを管理する必要がある場合
 - queue:データを追加した順序で処理する必要がある場合
 - priority_queue:常に最大値(または最小値)を取り出す必要がある場合
-
-#### 注意点
-
-- mapの[]演算子は存在しないキーにアクセスすると新しい要素を作成してしまうので注意が必要
-- queueとpriority_queueは、要素を追加したり削除したりすることはできるが、途中の要素に直接アクセスすることはできない
-
-#### その他のSTLコンテナ
-
-- set:重複を許さない要素の集合を管理
-- multiset:重複を許す要素の集合を管理
-- stack:後入れ先出し(LIFO)のデータ構造
-
-#### mapの[]演算子の注意点
-
-- 意図しない要素の追加を避けるため、基本的には`.at()`を使用することが推奨される
-
-```cpp
-map<string, int> score;
-cout << score["Alice"] << endl;  // 0(新しい要素が作成される)
-```
 
 #### queueとpriority_queueの制約
 
@@ -3027,30 +3044,6 @@ int main() {
         cout << x << " ";  // 40 30
     }
     cout << endl;
-}
-```
-
-#### コンテナアダプタ
-
-- stack、queue、priority_queueはコンテナアダプタ
-- 基底となるコンテナを指定可能
-
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    // デフォルトはvector<int>
-    stack<int> s1;
-    
-    // listを基底コンテナとして使用
-    stack<int, list<int>> s2;
-
-    s1.push(10);
-    s2.push(20);
-
-    cout << s1.top() << endl;  // 10
-    cout << s2.top() << endl;  // 20
 }
 ```
 
