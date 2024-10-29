@@ -2241,10 +2241,15 @@ cout << 2000000000LL * 2LL << endl; // int64_t * int64_t -> int64_t
 
 #### double型の出力精度指定
 
+double型を出力する場合、通常通りcoutで出力してしまうと適当な桁で四捨五入されて表示されてしまう。途中の桁まで四捨五入せずに確実に表示したい場合、以下のように書く。
+
 ```cpp
 cout << fixed << setprecision(桁数);
 cout << 3.14159265358979 << endl;
 ```
+
+- double型の精度は約16桁
+- 情報落ちと桁落ちに注意(大きな数と小さな数の演算、近い値同士の引き算)
 
 #### 型変換(キャスト)
 
@@ -2265,82 +2270,6 @@ cout << (int)b << endl; // double型をint型に変換(小数点以下切り捨�
 - int型とint64_t型 → int64_t型
 - double型とint64_t型 → double型
 
-#### 注意点
-
-- double型の精度は約16桁
-- 情報落ちと桁落ちに注意(大きな数と小さな数の演算、近い値同士の引き算)
-
-#### 浮動小数点数の誤差
-
-浮動小数点数(double型)は正確な値を表現できないことがある。
-
-```cpp
-double x = 0.1 + 0.2;
-if (x == 0.3) {
-    cout << "x is 0.3" << endl;
-} else {
-    cout << "x is not 0.3" << endl;
-}
-// 出力:x is not 0.3
-```
-
-#### 浮動小数点数の比較
-
-誤差を考慮して比較する必要がある。
-
-```cpp
-#include <cmath>
-
-double a = 0.1 + 0.2;
-double b = 0.3;
-if (abs(a - b) < 1e-10) {
-    cout << "a and b are approximately equal" << endl;
-}
-```
-
-#### 整数型の使い分け
-
-- int:一般的な整数
-- long long:より大きな整数(int64_tと同じ)
-- unsigned int:0以上の整数のみ
-
-#### 符号なし整数型(unsigned)
-
-```cpp
-unsigned int a = 4294967295; // 最大値
-cout << a + 1 << endl; // 0 (オーバーフローして0に戻る)
-```
-
-#### ビット演算
-
-整数型ではビット演算が可能。
-
-```cpp
-int a = 5;  // 0101 in binary
-int b = 3;  // 0011 in binary
-cout << (a & b) << endl; // 1 (ビットAND)
-cout << (a | b) << endl; // 7 (ビットOR)
-cout << (a ^ b) << endl; // 6 (ビットXOR)
-cout << (a << 1) << endl; // 10 (左シフト)
-cout << (a >> 1) << endl; // 2 (右シフト)
-```
-
-#### 数値リテラルの表記
-
-- 16進数:0xで始める(例：0xFF)
-- 8進数:0で始める(例：077)
-- 2進数:0bで始める(C++14以降、例：0b1010)
-
-#### 数値の範囲を表す定数
-
-`<limits>`ヘッダを使用して、各数値型の最大値と最小値を取得できる。
-
-```cpp
-#include <limits>
-cout << numeric_limits<int>::max() << endl;  // intの最大値
-cout << numeric_limits<int>::min() << endl;  // intの最小値
-```
-
 #### double型の精度と誤差
 
 ##### 精度の限界
@@ -2357,7 +2286,22 @@ cout << numeric_limits<int>::min() << endl;  // intの最小値
 ```cpp
 double x = 1000000000;
 double y = 0.000000001;
+// 1000000000.000000001 を表現するには19桁分必要 → 扱えない
 double z = x + y; // yの情報が失われる
+
+
+cout << fixed << setprecision(16);
+cout << "x: " << x << endl;
+cout << "y: " << y << endl;
+cout << "z: " << z << endl;
+```
+
+実行結果
+
+```
+x: 1000000000.0000000000000000
+y: 0.0000000010000000
+z: 1000000000.0000000000000000
 ```
 
 ##### 桁落ち
@@ -2381,8 +2325,9 @@ printf("x = %d, pi = %.10f\n", x, pi);
 
 - printf関数の主な書式指定子
     - %d：int型
-    - %lld：int64_t型
-    - %f：float型、double型
+    - %ld(%lld)：int64_t型
+    - %lf：float型、double型
+    - %c：char型
     - %s：string型(C言語形式の文字列)
 
 #### scanfでの入力
@@ -2395,46 +2340,11 @@ int x;
 scanf("%d", &x);
 ```
 
-- 主な書式指定子
-    - `%d`:int型
-    - `%lld`:int64_t型
-    - `%f`:float型
-    - `%lf`:double型
-    - `%s`:string型(C言語形式の文字列)
+書式指定子は基本的にはprintf関数と同じ。
 
 - 注意点
     - `&`をつけ忘れないよう注意
     - string型の変数に入力する場合は特別な処理が必要
-
-#### 浮動小数点数の誤差
-
-- 浮動小数点数(float型、double型)は内部的に2進数で表現されるため、10進数で表現できない値がある
-- 例：0.1は2進数で正確に表現できない
-
-```cpp
-double x = 0.1 + 0.2;
-if (x == 0.3) {
-    cout << "x is 0.3" << endl;
-} else {
-    cout << "x is not 0.3" << endl;
-}
-// 出力:x is not 0.3
-```
-
-- 対策
-    - 誤差を考慮して比較を行う
-
-```cpp
-if (abs(x - 0.3) < 1e-10) {
-    cout << "x is approximately 0.3" << endl;
-}
-```
-
-#### まとめ
-
-- `scanf`は高速だが安全性に注意が必要
-- 浮動小数点数の比較は誤差を考慮して行う
-- 精度が重要な計算では、適切な型の選択と誤差への対策が必要
 
 #### 文字列との変換
 
@@ -2460,16 +2370,15 @@ string s2 = "3.14";
 double num2 = stod(s2);  // 3.14
 ```
 
-- 注意点
-    - 変換できない文字列の場合、例外が発生する
-    - 整数型への変換時、小数点以下は切り捨てられる
+#### 数値の範囲を表す定数
 
-#### まとめ
+`<limits>`ヘッダを使用して、各数値型の最大値と最小値を取得できる。
 
-- 文字列と数値の相互変換には専用の関数が用意されている
-- `to_string`：数値から文字列への変換
-- `stoi`, `stod`：文字列から数値への変換
-- `<limits>`を使用して各数値型の範囲を取得できる
+```cpp
+#include <limits>
+cout << numeric_limits<int>::max() << endl;  // intの最大値
+cout << numeric_limits<int>::min() << endl;  // intの最小値
+```
 
 ### pair/tupleとauto
 
@@ -2560,7 +2469,7 @@ for (tuple<int, int, int> t : a) {
 
 #### auto
 
-型推論を行い、変数宣言を簡略化する。
+型推論を行い、変数宣言を簡略化する。変数宣言、範囲for文、参照で使える。
 
 ```cpp
 vector<int> c = {1, 2, 3};
@@ -2642,6 +2551,15 @@ cout << "(" << p.first << ", " << p.second << ")" << endl;  // (1, 2)
 
 ### STLのコンテナ(標準テンプレートライブラリ)
 
+- map
+- queue
+- priority_queue
+- set
+^ stack
+- deque
+- unordered_map
+- unordered_set
+
 #### map
 
 - 連想配列や辞書と呼ばれるデータ構造
@@ -2675,6 +2593,17 @@ cout << score.size();
 ```
 
 #### ループ
+
+```cpp
+// Keyの値が小さい順にループ
+for (pair<Keyの型, Valueの型> p : 変数名) {
+  Keyの型 key = p.first;
+  Valueの型 value = p.second;
+  // key, valueを使う
+}
+```
+
+autoを用いて簡潔に書くことができる。
 
 ```cpp
 for (auto p : score) {
@@ -2718,6 +2647,9 @@ q.pop();
 
 // 要素数の取得
 cout << q.size();
+
+// キューが空であるかを調べる
+q.empty(); // キューが空ならtrueを返す
 ```
 
 ### priority_queue
@@ -2747,6 +2679,9 @@ pq.pop();
 
 // 要素数の取得
 cout << pq.size();
+
+// キューが空であるかを調べる
+pq.empty(); // キューが空ならtrueを返す
 ```
 
 #### サンプルコード
@@ -2785,19 +2720,8 @@ queueとpriority_queueは、要素を追加したり削除したりすること�
 デフォルトでは最大値を取り出すが、最小値を取り出すように設定することもできる。
 
 ```cpp
-priority_queue<int, vector<int>, greater<int>> pq;
+priority_queue<型, vector<型>, greater<型>> 変数;
 ```
-
-#### 計算量のまとめ
-
-各コンテナの主な操作の計算量をまとめると以下のようになる。
-
-| コンテナ | 操作 | 計算量 |
-|----------|------|--------|
-| map      | 追加/削除/アクセス | O(log N) |
-| queue    | 追加/削除/アクセス | O(1) |
-| priority_queue | 追加/削除 | O(log N) |
-|           | 最大値アクセス | O(1) |
 
 #### 使い分け
 
@@ -2818,11 +2742,6 @@ priority_queue<int, vector<int>, greater<int>> pq;
 auto comp = [](int a, int b) { return a > b; };
 priority_queue<int, vector<int>, decltype(comp)> pq(comp);
 ```
-
-#### mapの順序
-
-- mapは内部でキーを昇順にソートして保持している
-- キーの型には比較演算子(<)が定義されている必要がある
 
 #### 計算量の重要性
 
@@ -3168,7 +3087,7 @@ struct 構造体名 {
 #### メンバ変数へのアクセス
 
 ```cpp
-オブジェクト.メンバ変数
+オブジェクト.メンバ変数;
 ```
 
 #### メンバ関数の定義
