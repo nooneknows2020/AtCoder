@@ -3854,8 +3854,723 @@ LOOP_END:
 
 ## 第4章:今まで説明していなかったこと
 
+### includeディレクティブ
+
+- ソースファイル
+   - ソースコードを記述したファイル
+   - AtCoderのコードテストでは1つのソースファイルとして処理される
+
+- ライブラリ
+   - 便利な関数や構造体をまとめたもの
+   - STLはC++の標準ライブラリ
+
+- includeディレクティブ
+   - `#include <ファイル>` または `#include "ファイル"`
+   - 指定したファイルの内容をその部分に展開する
+
+- `#include <bits/stdc++.h>`
+   - STLを利用するためのincludeディレクティブ
+   - STLの全ての機能を使用可能にする
+
+- 複数のソースファイルでのプログラム作成
+   - 大規模なプログラムやライブラリ作成時に有用
+   - ヘッダファイルとソースファイルを分けて使用する
+
+- ヘッダファイル
+   - 関数のプロトタイプ宣言や構造体の宣言をまとめたファイル
+   - 慣習的に `.h` や `.hpp` の拡張子を使用
+
+ソースコード例(複数ファイルの使用)
+
+`main.cpp`
+
+```cpp
+#include <bits/stdc++.h>
+#include "mylib.h"
+using namespace std;
+
+int main() {
+    cout << square(5) << endl;
+    return 0;
+}
+```
+
+`mylib.h`
+
+```cpp
+#ifndef MYLIB_H
+#define MYLIB_H
+
+int square(int x);
+
+#endif
+```
+
+`mylib.cpp`
+
+```cpp
+#include "mylib.h"
+
+int square(int x) {
+    return x * x;
+}
+```
+
+#### プログラムが実行されるまでの流れ
+
+1. ソースコードを書く
+1. ソースファイルとして保存
+1. コンパイラがソースファイルを実行ファイルに変換(コンパイル)
+1. 実行ファイルを実行
+
+- プリプロセッサ
+   - コンパイルの前段階で処理を行う
+   - includeディレクティブやdefineディレクティブを処理
+   - ソースコードの書き換えを行うが、実行速度には影響しない
+
+- includeするファイルの検索
+   - `#include <ファイル>`: システムのライブラリ用、標準ディレクトリを検索
+   - `#include "ファイル"`: 自作ファイル用、現在のディレクトリから検索
+
+- bits/stdc++.h
+   - STLの全ヘッダファイルをインクルードするファイル
+   - GCC特有の機能で、他の環境では使用不可
+   - 簡単なプログラムには便利だが、本来は必要な機能ごとにインクルードするべき
+
+- 個別のヘッダファイル
+   - 機能ごとに適切なヘッダファイルをインクルードする方法
+
+例
+
+```cpp
+#include <iostream> // cout, endl, cin
+#include <string> // string, to_string, stoi
+#include <vector> // vector
+#include <algorithm> // min, max, swap, sort, reverse, lower_bound, upper_bound
+#include <utility> // pair, make_pair
+#include <tuple> // tuple, make_tuple
+#include <cstdint> // int64_t, int*_t
+#include <cstdio> // printf
+#include <map> // map
+#include <queue> // queue, priority_queue
+#include <set> // set
+#include <stack> // stack
+#include <deque> // deque
+#include <unordered_map> // unordered_map
+#include <unordered_set> // unordered_set
+#include <bitset> // bitset
+#include <cctype> // isupper, islower, isdigit, toupper, tolower
+```
+
+- ヘッダファイルの選択
+   - 必要最小限のヘッダファイルをインクルードすることで、コードの依存関係を明確にする
+   - コンパイル時間の短縮にもつながる
+
+- 移植性
+   - `bits/stdc++.h`はGCC特有の機能であり、他の環境では使用できない
+   - 移植性を考慮する場合は、個別のヘッダファイルをインクルードする方が良い
+
+- プリコンパイル済みヘッダ
+   - 大規模なプロジェクトでは、頻繁に使用するヘッダファイルをプリコンパイルすることでコンパイル時間を短縮できる
+   - `bits/stdc++.h`はこの目的でも使用される
+
+- インクルードガード
+    - ヘッダファイルの多重インクルードを防ぐための仕組み
+    - `#ifndef`, `#define`, `#endif`を使用する
+
+### 名前空間
+
+#### 名前空間の概要
+
+- 関数、構造体、グローバル変数の名前の衝突を避けるための機能
+- 同名の要素を異なる名前空間で定義可能
+
+#### 名前空間の定義
+
+```cpp
+namespace 名前空間名 {
+    // 内容
+}
+```
+
+- 名前空間内の要素へのアクセス
+   - `名前空間名::要素名` の形式で指定
+
+- 名前空間のネスト
+   - 名前空間の中に別の名前空間を定義可能
+
+- using namespace
+   - `using namespace 名前空間名;` で名前空間の指定を省略可能
+   - スコープ内でのみ有効
+
+- std名前空間
+   - STLの関数や構造体は std 名前空間内に定義されている
+   - `using namespace std;` で std:: の指定を省略可能
+
+名前空間の使用例
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace A {
+    void f() { cout << "namespace A" << endl; }
+}
+
+namespace B {
+    void f() { cout << "namespace B" << endl; }
+}
+
+int main() {
+    A::f();  // 名前空間A内の関数fの呼び出し
+    B::f();  // 名前空間B内の関数fの呼び出し
+}
+```
+
+#### using namespace std を使わない例
+
+```cpp
+#include <bits/stdc++.h>
+
+int main() {
+    std::vector<int> a = {3, 4, 1, 2};
+    std::sort(a.begin(), a.end());
+    for (int i = 0; i < a.size(); i++) {
+        std::cout << a.at(i) << std::endl;
+    }
+}
+```
+
+#### 名前空間のエイリアス
+
+   - 長い名前空間や、ネストされた名前空間に別名(エイリアス)を付けることができる
+   - `namespace 別名 = 名前空間;` の形式で定義
+
+#### エイリアスの使用例
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace A {
+    namespace B {
+        namespace C {
+            void f() { cout << "A::B::C::f" << endl; }
+        }
+    }
+}
+
+namespace too_long_name {
+    void f() { cout << "too_long_name::f" << endl; }
+}
+
+int main() {
+    namespace abc = A::B::C;
+    abc::f();  // A::B::C::f() と同じ
+
+    namespace s = too_long_name;
+    s::f();  // too_long_name::f() と同じ
+}
+```
+
+#### エイリアスの利点
+
+   - 長い名前空間名を短縮できる
+   - ネストされた名前空間へのアクセスを簡略化できる
+   - コードの可読性が向上する
+
+#### エイリアスのスコープ
+
+   - エイリアスは定義されたスコープ内でのみ有効
+   - 関数内で定義すれば、その関数内でのみ使用可能
+   
+
+### テンプレート
+
+#### テンプレートの概要
+
+- 構造体や関数の「型」を一般化するための機能
+
+#### 関数テンプレート
+
+- 同様の処理を行うが、利用する型が異なる関数をまとめる
+
+宣言方法
+
+```cpp
+template <typename T>
+T function_name(T arg) {
+    // 処理
+}
+```
+
+使用例
+
+```cpp
+template <typename T>
+T square(T x) {
+    return x * x;
+}
+
+int main() {
+    cout << square<int>(3) << endl;    // 9
+    cout << square<double>(1.5) << endl; // 2.25
+}
+```
+
+#### クラステンプレート
+
+- 構造体の内容を型について一般化する
+
+宣言方法
+
+```cpp
+template <typename T>
+struct struct_name {
+    T member;
+    // その他のメンバ
+};
+```
+
+使用例
+
+```cpp
+template <typename T>
+struct Point {
+    T x, y;
+    void print() {
+        cout << "(" << x << ", " << y << ")" << endl;
+    }
+};
+
+int main() {
+    Point<int> p1 = {1, 2};
+    Point<double> p2 = {1.5, 2.5};
+    p1.print();  // (1, 2)
+    p2.print();  // (1.5, 2.5)
+}
+```
+
+#### 定数のテンプレート
+
+- 整数型の定数をテンプレート引数として使用可能
+
+使用例
+
+```cpp
+template <int MOD>
+struct Modulo {
+    int x;
+    Modulo(int v) : x(v % MOD) {}
+};
+
+int main() {
+    Modulo<1000000007> m(1000000008);
+    cout << m.x << endl;  // 1
+}
+```
+
+#### テンプレートの注意点
+
+- 使用されていないテンプレートはコンパイル時にエラーが検出されない場合がある
+- テンプレートの実体化は使用時に行われる
 
 
+#### テンプレートの実体化
+
+- テンプレートは「関数・構造体を自動的に生成するための設計図」
+- 実際に使用されるときに初めて具体的な関数・構造体が生成される(実体化)
+- 実体化されていないテンプレートのエラーはコンパイル時に検出されない
+
+#### 実体化のタイミング
+
+- 関数テンプレート：その関数が呼び出されたとき
+- クラステンプレート：そのクラスのオブジェクトが生成されたとき
+
+#### 実体化の例
+
+```cpp
+template <typename T>
+T square(T x) { return x * x; }
+
+int main() {
+    square<int>(10);    // int版のsquare関数が実体化
+    square<double>(1.5); // double版のsquare関数が実体化
+}
+```
+
+#### テンプレートの部分特殊化と完全特殊化
+
+- 特定の型に対して異なる実装を提供する機能
+- 完全特殊化：特定の型に対して完全に異なる実装を提供
+- 部分特殊化：テンプレート引数の一部を特殊化
+
+#### 特殊化の例
+
+```cpp
+// 一般的なテンプレート
+template <typename T>
+struct MyTemplate { /* ... */ };
+
+// int型に対する完全特殊化
+template <>
+struct MyTemplate<int> { /* ... */ };
+
+// ポインタ型に対する部分特殊化
+template <typename T>
+struct MyTemplate<T*> { /* ... */ };
+```
+
+#### テンプレートの制約
+
+- C++20以降では、conceptsを使用してテンプレート引数に制約を設けることが可能
+
+#### ペアの比較
+
+```cpp
+template <typename T, typename U>
+bool chmax(T& a, const U& b) {
+    if (a < b) {
+        a = b;
+        return true;
+    }
+    return false;
+}
+
+template <typename T, typename U>
+bool chmin(T& a, const U& b) {
+    if (b < a) {
+        a = b;
+        return true;
+    }
+    return false;
+}
+```
+- 2つの値を比較し、必要に応じて更新する関数
+- 最大値・最小値の更新に便利
+
+#### 累乗計算
+
+```cpp
+template <typename T>
+T pow(T a, long long n) {
+    T res = 1;
+    while (n > 0) {
+        if (n & 1) res *= a;
+        a *= a;
+        n >>= 1;
+    }
+    return res;
+}
+```
+- 高速に累乗を計算する関数
+- 繰り返し二乗法を利用
+
+#### 最大公約数(GCD)
+
+```cpp
+template <typename T>
+T gcd(T a, T b) {
+    if (b == 0) return a;
+    return gcd(b, a % b);
+}
+```
+- ユークリッドの互除法を用いたGCD計算
+
+#### 最小公倍数(LCM)
+
+```cpp
+template <typename T>
+T lcm(T a, T b) {
+    return a / gcd(a, b) * b;
+}
+```
+- GCDを利用したLCM計算
+
+### イテレータ
+
+#### イテレータの概要
+
+- コンテナの要素に順番にアクセスするための機能
+- 配列、map、setなど様々なコンテナで使用可能
+- 処理を一般化でき、STLの多くの関数はイテレータを引数に取る
+
+#### イテレータの基本操作
+
+```cpp
+vector<int> a = {3, 1, 5, 6, 7, 2, 4};
+auto itr = a.begin();  // 先頭を指すイテレータ
+itr = itr + 2;  // 3番目の要素を指すイテレータ
+cout << *itr << endl;  // イテレータが指す要素にアクセス
+```
+
+#### イテレータを使用したループ
+
+```cpp
+vector<int> a = {1, 2, 3};
+for (auto it = a.begin(); it != a.end(); it++) {
+    cout << *it << endl;
+}
+```
+
+#### 主なイテレータ操作
+
+- `コンテナ.begin()`: 先頭要素を指すイテレータ
+- `コンテナ.end()`: 末尾の次を指すイテレータ
+- `イテレータ++`: 次の要素に進む
+- `イテレータ--`: 前の要素に戻る
+- `*イテレータ`: 要素にアクセス
+- `イテレータ->メンバ`: 要素のメンバにアクセス
+
+#### イテレータの移動と距離
+
+```cpp
+auto it = a.begin();
+advance(it, 3);  // 3つ進める
+auto next_it = next(it);  // 次の要素を指すイテレータ
+auto prev_it = prev(it);  // 前の要素を指すイテレータ
+int dist = distance(a.begin(), it);  // イテレータ間の距離
+```
+
+#### イテレータを使用した要素の削除
+
+```cpp
+vector<int> a = {1, 2, 3, 4, 5};
+auto it = a.begin() + 2;
+a.erase(it);  // 3番目の要素を削除
+```
+
+#### イテレータの注意点
+
+- 要素の追加や削除によってイテレータが無効になることがある
+- 無効なイテレータの使用は未定義動作を引き起こす
+
+#### コンテナ別のイテレータ操作の計算量
+
+- 配列(vector): ほとんどの操作がO(1)
+- map/set: 移動操作がO(N)、アクセスがO(1)
+
+
+#### イテレータの無効化
+
+- 要素の追加や削除によってイテレータが無効になることがある
+- 無効なイテレータの使用は未定義動作を引き起こす
+
+##### 無効化の例(vector)
+
+```cpp
+vector<int> v = {1, 2, 3, 4, 5};
+auto it = v.begin() + 2;  // 3を指すイテレータ
+v.erase(v.begin());  // 先頭要素を削除
+// この時点でitは無効になる
+```
+
+##### 安全な削除方法
+
+```cpp
+for (auto it = v.begin(); it != v.end();) {
+    if (条件) {
+        it = v.erase(it);  // 削除後の次の要素を指すイテレータを返す
+    } else {
+        ++it;
+    }
+}
+```
+
+#### コンテナ別のイテレータの特徴
+
+- vector
+    - ランダムアクセスイテレータ
+    - 全ての操作が効率的(O(1))
+
+- list
+    - 双方向イテレータ
+    - 要素の追加・削除が効率的
+
+- map/set
+    - 双方向イテレータ
+    - 要素の移動操作がO(N)
+
+#### イテレータを使用したSTLアルゴリズム
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    vector<int> v = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+    
+    // ソート
+    sort(v.begin(), v.end());
+    
+    // 二分探索
+    auto it = lower_bound(v.begin(), v.end(), 4);
+    if (it != v.end()) {
+        cout << "Found: " << *it << endl;
+    }
+    
+    // 要素の数え上げ
+    int count = count_if(v.begin(), v.end(), [](int x) { return x % 2 == 0; });
+    cout << "Even numbers: " << count << endl;
+}
+```
+
+#### イテレータの種類
+
+- 入力イテレータ：読み取り専用、一方向
+- 出力イテレータ：書き込み専用、一方向
+- 前方イテレータ：読み書き可能、一方向
+- 双方向イテレータ：読み書き可能、双方向
+- ランダムアクセスイテレータ：読み書き可能、任意の要素にアクセス可能
+
+- イテレータの無効化
+   - 要素の追加や削除によってイテレータが無効になることがある
+   - 無効なイテレータの使用は未定義動作を引き起こす
+
+- コンテナ別のイテレータの特徴
+   - vector: ランダムアクセスイテレータ(全ての操作が効率的)
+   - list: 双方向イテレータ(要素の追加・削除が効率的)
+   - map/set: 双方向イテレータ(要素の移動操作がO(N))
+
+- イテレータの操作の計算量
+   - 配列(vector):
+     - begin(), end(), next, prev, +, -, advance, ++, --, distance, *や->によるアクセス: O(1)
+     - 要素の削除: O(N)(Nは削除する要素以降の要素数)
+   - map/set:
+     - begin(), end(): O(1)
+     - next, prev, ++, --, advance: O(N)(Nは移動する回数)
+     - distance: O(N)(Nはイテレータ間の距離)
+     - *や->によるアクセス: O(1)
+     - 要素の削除: 償却計算量でO(1)
+
+- const_iterator
+   - 要素の変更を許可しないイテレータ
+   - cbegin(), cend()で取得可能
+
+- reverse_iterator
+   - 逆順にイテレータを進めるイテレータ
+   - rbegin(), rend()で取得可能
+
+- イテレータの種類
+   - 入力イテレータ、出力イテレータ、前方イテレータ、双方向イテレータ、ランダムアクセスイテレータの5種類がある
+
+- イテレータを使用したSTL関数
+   - sort, lower_bound, upper_bound, binary_search, find, count, copyなど多くの関数がイテレータを利用する
+
+
+### ポインタ
+
+#### メモリとアドレス
+
+- メモリは巨大な配列のようなもの
+- 1バイト(8ビット)単位で扱われる
+- アドレス(番地)で位置を識別
+
+#### ポインタの基本
+
+- ポインタはメモリのアドレスを扱う整数型
+- 宣言: `型 *ポインタ名;`
+- アドレス取得: `&変数`
+- ポインタ経由のアクセス: `*ポインタ`
+
+```cpp
+int x = 1;
+int *p = &x;
+*p = 2;
+cout << x << endl;  // 2
+```
+
+#### ポインタの操作
+
+- ポインタの指す先の変更: `ポインタ = &変数;`
+- ポインタ経由のメンバアクセス: `ポインタ->メンバ`
+
+```cpp
+struct A {
+    int data;
+    void print() { cout << data << endl; }
+};
+
+A a = {1};
+A *p = &a;
+p->print();  // 1
+p->data = 2;
+p->print();  // 2
+```
+
+#### ポインタの値
+
+- ポインタ自体の値(アドレス)を出力: `cout << ポインタ;`
+
+```cpp
+int x = 1;
+int *p = &x;
+cout << p << endl;  // 0x7ffcf0483a6c (例)
+```
+
+#### メモリ領域
+
+- スタック領域
+    - ローカル変数が配置される
+    - 関数呼び出し時に確保、終了時に解放
+
+- ヒープ領域
+    - 動的に確保・解放する領域
+    - `new`で確保、`delete`で解放
+
+```cpp
+int *p = new int;  // 1つの整数を確保
+*p = 10;
+cout << *p << endl;  // 10
+delete p;
+
+int *arr = new int[5];  // 5つの整数の配列を確保
+arr[0] = 1;
+cout << arr[0] << endl;  // 1
+delete[] arr;
+```
+
+#### ポインタの注意点
+
+- 不正なメモリアクセスに注意
+- メモリリークを防ぐため、確保したメモリは必ず解放する
+
+- メモリの扱い方
+   - メモリは1バイト(8ビット)単位で扱われる
+   - 8ビット以上のデータは連続した複数のバイトに分割して保存される
+
+- エンディアン
+   - リトルエンディアン：下位バイトから順に保存
+   - ビッグエンディアン：上位バイトから順に保存
+   - 多くのCPUはリトルエンディアンを採用
+
+- アラインメント
+   - データ型によって適切なメモリ境界に配置される
+   - 例：32ビット整数は4の倍数のアドレスに配置される
+   - パフォーマンス向上のため
+
+- ポインタのサイズ
+   - 32ビットOSでは4バイト、64ビットOSでは8バイト
+   - アドレス空間の大きさに依存
+
+- ポインタ演算
+   - ポインタに整数を加減算すると、その型のサイズ分だけアドレスが変化する
+   - 例：int*に1を加算すると、アドレスは4バイト増加
+
+- ヌルポインタ
+   - 値が0のポインタ
+   - どの型のポインタにも代入可能
+   - メモリにアクセスしようとするとエラーになる
+
+- void*
+   - 型を持たない汎用ポインタ
+   - どの型のポインタにも変換可能
+   - 逆に、どの型のポインタもvoid*に変換可能
+
+- const修飾子とポインタ
+   - const int*：ポインタを通じて値を変更できない
+   - int* const：ポインタ自体を変更できない
+   - const int* const：両方の制約がある
 
 ## 参考
 
