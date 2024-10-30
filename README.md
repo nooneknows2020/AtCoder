@@ -22,7 +22,7 @@
 ```
 
 - cpp_study.md
-  - [AtCoderのためのC++入門](./blob/main/cpp_study.md)と題して、APG4bの内容をまとめたものです。
+  - [AtCoderのためのC++入門](./cpp_study.md)と題して、APG4bの内容をまとめたものです。
 
 ## 使用言語
 
