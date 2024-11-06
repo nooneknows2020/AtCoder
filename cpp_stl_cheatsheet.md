@@ -35,3 +35,11 @@ to_string(x);   // 数値を文字列に変換
 stoi(s);        // 文字列を整数に変換
 stod(s);        // 文字列を浮動小数点数に変換
 ```
+
+使用例
+
+```cpp
+string num_str = to_string(123);
+int num = stoi("123");
+double d = stod("3.14");
+```
