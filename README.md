@@ -18,11 +18,14 @@
 .
 ├── LICENSE
 ├── README.md
+├── cpp_stl_cheatsheet.md
 └── cpp_study.md
 ```
 
-- cpp_study.md
-  - [AtCoderのためのC++入門](./cpp_study.md)と題して、APG4bの内容をまとめたものです。
+- [cpp_study.md](./cpp_study.md)
+  - AtCoderのためのC++入門と題して、APG4bの内容をまとめたものです。
+- [cpp_stl_cheatsheet.md](./cpp_stl_cheatsheet.md)
+  - STLの関数のチートです。
 
 ## 使用言語
 
