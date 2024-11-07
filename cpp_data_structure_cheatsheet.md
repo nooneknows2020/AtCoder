@@ -69,3 +69,28 @@ vector<vector<int>> data = {
 
 ### 3次元配列
 
+```cpp
+vector<vector<vector<要素の型>>> 変数名(要素数1, vector<vector<要素の型>>(要素数2, vector<要素の型>(要素数3, 初期値))); // 3次元配列を宣言する
+vector<vector<vector<要素の型>>> 変数名(要素数1, vector<vector<要素の型>>(要素数2, vector<要素の型>(要素数3))); // 初期値を省略して宣言する
+```
+
+要素を指定して初期化する例
+
+```cpp
+vector<vector<vector<char>>> data = {
+  {
+    { '-', '-', '-' },
+    { '-', 'x', '-' },
+    { '-', 'o', '-' }
+  },
+  {
+    { 'x', 'o', '-' },
+    { '-', 'o', '-' },
+    { 'x', '-', '-' }
+  }
+};
+```
+
+## pair
+
+## tuple
