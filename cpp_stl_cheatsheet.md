@@ -35,22 +35,6 @@ gcd(a, b);    // 最大公約数
 lcm(a, b);    // 最小公倍数
 ```
 
-## その他の便利な機能
-
-```cpp
-to_string(x);   // 数値を文字列に変換
-stoi(s);        // 文字列を整数に変換
-stod(s);        // 文字列を浮動小数点数に変換
-```
-
-使用例
-
-```cpp
-string num_str = to_string(123);
-int num = stoi("123");
-double d = stod("3.14");
-```
-
 ## lower_bound() / upper_bound()
 
 - ソート済みの範囲で二分探索を行う関数
@@ -74,4 +58,20 @@ cout << *lower_bound(a.begin(), a.end(), 14) << endl; // 14
 
 // 10 を超える最小の要素は 13
 cout << *upper_bound(a.begin(), a.end(), 10) << endl; // 13
+```
+
+## その他の便利な機能
+
+```cpp
+to_string(x);   // 数値を文字列に変換
+stoi(s);        // 文字列を整数に変換
+stod(s);        // 文字列を浮動小数点数に変換
+```
+
+使用例
+
+```cpp
+string num_str = to_string(123);
+int num = stoi("123");
+double d = stod("3.14");
 ```
