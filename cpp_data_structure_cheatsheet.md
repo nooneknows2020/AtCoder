@@ -94,11 +94,11 @@ vector<vector<vector<char>>> data = {
 ## pair
 
 ```cpp
-pair<型1, 型2> 変数名;  // pairを宣言する
+pair<型1, 型2> 変数名;            // pairを宣言する
 pair<型1, 型2> 変数名(値1, 値2);  // pairの初期値を指定して宣言する
-変数名.first; // 1番目の値にアクセスする
-変数名.second; // 2番目の値にアクセスする
-make_pair(値1, 値2); // pairを生成する
+変数名.first;                     // 1番目の値にアクセスする
+変数名.second;                    // 2番目の値にアクセスする
+変数名 = make_pair(値1, 値2);     // pairを生成する
 
 型1 変数1;
 型2 変数2;
@@ -108,16 +108,16 @@ tie(変数1, 変数2) = pair型の値; // pairを分解する
 ## tuple
 
 ```cpp
-tuple<型1, 型2, 型3, (...)> 変数名; // tupleを宣言する
+tuple<型1, 型2, 型3, (...)> 変数名;                     // tupleを宣言する
 tuple<型1, 型2, 型3, (...)> 変数名(値1, 値2, 値3, ...); // tupleの初期値を指定して宣言する
-get<K>(tuple型の変数);  // K(定数)番目にアクセスする
-make_tuple(値1, 値2, 値3, (...)); // tupleを生成する
+get<K>(tuple型の変数);                                  // K(定数)番目にアクセスする
+make_tuple(値1, 値2, 値3, (...));                       // tupleを生成する
 
 型1 変数1;
 型2 変数2;
 型3 変数3;
 ...
-tie(変数1, 変数2, 変数3, (...)) = tuple型の値;  // tupleを分解する
+tie(変数1, 変数2, 変数3, (...)) = tuple型の値;          // tupleを分解する
 ```
 
 ### 範囲for文でautoを使う
@@ -127,3 +127,168 @@ for(auto 変数名 : 配列変数){
   // 変数名を使う
 }
 ```
+
+## map:連想配列
+
+```cpp
+map<Keyの型, Valueの型> 変数名; // mapを宣言する
+変数[key] = value;              // 値を追加する
+変数.erase(key);                // 値を削除する
+変数.at(key);                   // 値にアクセスする
+変数.count(key);                // 所属判定
+変数.size();                    // 要素数を取得する
+
+// ループ処理(Keyの値が小さい順にループ)
+for(pair<Keyの型, Valueの型> p : 変数名){
+  Keyの型 key = p.first;
+  Valueの型 vakue = p.second;
+  // key, valueを使う処理
+}
+
+// ループをautoで書き換える
+for(auto p : 変数名){
+  auto key = p.first;
+  auto value = p.second;
+  // key, valueを使う処理
+}
+```
+
+ループとautoの使用例
+
+```cpp
+map<string, int> score;
+score["Alice"] = 100;
+score["Dave"] = 95;
+score["Bob"] = 89;
+
+// for (pair<string, int> p : score) {
+//   string k = p.first;
+//   int v = p.second;
+//   cout << k << " => " << v << endl;
+// }
+
+for (auto p : score) {
+  auto k = p.first;
+  auto v = p.second;
+  cout << k << " => " << v << endl;
+}
+```
+
+出力
+
+```
+Alice => 100
+Bob => 89
+Dave => 95
+```
+
+所属判定の使用例
+
+```cpp
+if(変数.count(key)){
+  // keyに対応する関係が存在するときの処理
+}else{
+  // keyに対応する関係が存在しないときの処理
+}
+```
+
+## queue:待ち行列
+
+```cpp
+queue<型> 変数名;   // queueを宣言する
+変数.push(値);      // 要素を追加する
+変数.front();       // 先頭の要素へアクセスする
+変数.pop();         // 先頭の要素を削除する
+変数.size();        // 要素数を取得する
+変数.empty();       // キューが空であるかを調べる
+```
+
+使用例
+
+```cpp
+queue<int> q;
+q.push(10);
+q.push(3);
+q.push(6);
+q.push(1);
+
+while(!q.empty()){
+  cout << q.front() << "\n";
+  q.pop();
+}
+```
+
+出力
+
+```
+10
+3
+6
+1
+```
+
+## priority_queue:優先度付きキュー
+
+それまでに追加した要素のうち、最も大きいものを取り出す。
+
+```cpp
+priority_queue<型> 変数名;    // priority_queueを宣言する
+変数.push(値);                // 要素を追加する
+変数.top();                   // 最大の要素を取得する
+変数.pop();                   // 最大の要素を削除する
+変数.size();                  // 要素数の取得
+変数.empty();                 // キューが空であるかを調べる
+
+// 値が小さい順に取り出されるpriority_queueの宣言
+priority_queue<型, vector<型>, greater<型>> 変数名;
+```
+
+使用例
+
+```cpp
+priority_queue<int> pq;
+pq.push(10);
+pq.push(3);
+pq.push(6);
+pq.push(1);
+
+while(!pq.empty()){
+  cout << pq.top() << "\n";
+  pq.pop();
+}
+```
+
+出力
+
+```
+10
+6
+3
+1
+```
+
+最小の要素を取り出す例
+
+```cpp
+priority_queue<int, vector<int>, greater<int>> pq;
+pq.push(10);
+pq.push(3);
+pq.push(6);
+pq.push(1);
+
+while(!pq.empty()){
+  cout << pq.top() << "\n";
+  pq.pop();
+}
+```
+
+出力
+
+```
+1
+3
+6
+10
+```
+
+## set:重複の無いデータのまとまりを扱う
