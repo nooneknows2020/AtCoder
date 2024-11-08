@@ -18,17 +18,10 @@
 .
 ├── LICENSE
 ├── README.md
-├── cpp_data_structure_cheatsheet.md
-├── cpp_stl_cheatsheet.md
-└── cpp_study.md
+├── cpp_data_structure_cheatsheet.md  ... データ構造のチートシート
+├── cpp_stl_cheatsheet.md ... STLの関数のチートシート
+└── cpp_study.md  ... APG4bの内容をまとめた
 ```
-
-- [cpp_study.md](./cpp_study.md)
-  - APG4bの内容をまとめました。
-- [cpp_stl_cheatsheet.md](./cpp_stl_cheatsheet.md)
-  - STLの関数のチートシートです。
-- [cpp_data_structure_cheatsheet.md](./cpp_data_structure_cheatsheet.md)
-  - データ構造のチートシートです。
 
 ## 使用言語
 
