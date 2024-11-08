@@ -3033,7 +3033,7 @@ int main() {
 
 ```cpp
 *lower_bound(配列.begin(), 配列.end(), 値)  // 「値」以上の最小の値
-*upper_bound(配列.begin(), 配列.end(), 値)  // 「値」を超えるの最小の値
+*upper_bound(配列.begin(), 配列.end(), 値)  // 「値」を超える最小の値
 ```
 
 #### 空のコンテナに対する操作
