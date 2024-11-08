@@ -102,7 +102,7 @@ pair<型1, 型2> 変数名(値1, 値2);  // pairの初期値を指定して宣�
 
 型1 変数1;
 型2 変数2;
-tie(変数1, 変数2) = pair型の値; // pairを分解する
+tie(変数1, 変数2) = pair型の値;   // pairを分解する
 ```
 
 ## tuple
@@ -137,7 +137,11 @@ map<Keyの型, Valueの型> 変数名; // mapを宣言する
 変数.at(key);                   // 値にアクセスする
 変数.count(key);                // 所属判定
 変数.size();                    // 要素数を取得する
+```
 
+ループ
+
+```cpp
 // ループ処理(Keyの値が小さい順にループ)
 for(pair<Keyの型, Valueの型> p : 変数名){
   Keyの型 key = p.first;
@@ -292,3 +296,129 @@ while(!pq.empty()){
 ```
 
 ## set:重複の無いデータのまとまりを扱う
+
+```cpp
+set<値の型> 変数名;   // setを宣言する
+変数.insert(値);      // 要素を追加する
+変数.erase(値);       // 要素を削除する
+変数.count(値);       // 所属判定
+変数.size();          // 要素数を取得する
+変数.empty();         // 空であるかを調べる
+*begin(変数);         // 最小値を取得する
+*rbegin(変数);        // 最大値を取得する
+```
+
+ループ
+
+```cpp
+for(auto value : 変数名){
+  // valueを使う
+}
+```
+
+使用例
+
+```cpp
+set<int> S;
+S.insert(3);
+S.insert(7);
+S.insert(8);
+S.insert(10);
+S.insert(3);  // 3はすでに含まれているのでこの操作は無視される
+
+cout << "size: " << S.size() << "\n";
+
+if(S.count(7)){
+  cout << "found 7" << "\n";
+}
+```
+
+出力
+
+```
+size: 4
+found 7
+```
+
+## stack:LIFO(Last In First Out)
+
+```cpp
+stack<値の型> 変数名; // stackを宣言する
+変数.push(値);  // 要素を追加する
+変数.top(); // 次の要素にアクセスする
+変数.pop(); // 要素を削除する
+変数.size();  // 要素数を取得する
+変数.empty(); // 空であるか調べる
+```
+
+使用例
+
+```cpp
+stack<int> S;
+S.push(3);
+S.push(7);
+S.push(1);
+
+while(!S.empty()){
+  cout << S.top() << " ";
+  S.pop();
+}
+```
+
+出力
+
+```
+1 7 3
+```
+
+## deque(double-ended queue):両端キュー
+
+```cpp
+deque<値の型> 変数名;
+
+// 値を追加する
+変数.push_front(値);  // 先頭に値を追加する
+変数.push_back(値); // 末尾に値を追加する
+
+// 値にアクセスする
+変数.front(); // 先頭の値にアクセスする
+変数.back();  // 末尾の値にアクセスする
+変数.at(i); // i番目の値にアクセスする
+
+// 値を削除する
+変数.pop_front(); // 先頭の要素を削除する
+変数.pop_back();  // 末尾の要素を削除する
+
+// 要素数を取得する
+変数.size();
+
+// 空であるかを調べる
+変数.empty();
+```
+
+使用例
+
+```cpp
+deque<int> d;
+d.push_front(10);
+d.push_back(20);
+d.pop_front();
+d.pop_back();
+
+d.push_back(30);
+d.push_front(40);
+
+for(int x : d){
+  cout << x << " ";
+}
+```
+
+出力
+
+```
+40 30
+```
+
+## multiset
+## unordered_map
+## unordered_set
