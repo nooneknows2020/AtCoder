@@ -331,6 +331,10 @@ cout << "size: " << S.size() << "\n";
 if(S.count(7)){
   cout << "found 7" << "\n";
 }
+
+for(auto x : S){
+  cout << x << " ";
+}
 ```
 
 出力
@@ -338,9 +342,10 @@ if(S.count(7)){
 ```
 size: 4
 found 7
+3 7 8 10
 ```
 
-## stack:LIFO(Last In First Out)
+## stack:LIFO(Last In First Out):後入れ先出し
 
 ```cpp
 stack<値の型> 変数名; // stackを宣言する
